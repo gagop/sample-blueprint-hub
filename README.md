@@ -1,14 +1,11 @@
 # blueprint-hub
 
-# General description
-This project showcases different implementations of the same business requirements, aiming to highlight the diverse approaches to solving identical problems and emphasizing the strengths and weaknesses of each solution.
+# Short descrition
+This repository stores examples of various implementations based on the same business requirements. The repository was created as an example of different ways to solve the same problem. 
+None of the presented solutions is considered perfect. 
+Each solution presents certain advantages and disadvantages. 
+Whether a given architecture is appropriate for a specific problem always depends on the context of the decisions being made. I hope that this repository will help to show a broader picture of different kinds of approaches.
 
-It is important to note that none of the solutions presented are deemed "the best."
-
-Each implementation adheres to the same business requirements, starting from simpler architectures and gradually moving towards more complex ones. It's crucial to understand that a more "complex" solution does not inherently imply superiority.
-
-Accompanying each solution, there will be an additional description to explain the rationale behind the choices made and to discuss the merits and drawbacks of each approach.
-
-This repository is intended to offer insight into different methodologies for addressing the same issue, facilitating a deeper understanding of their respective advantages and disadvantages.
-
-In the context of determining the quality of a specific architecture, the answer invariably hinges on the specifics of the scenario.
+# Introduction to business requirements
+Our repository will implement a certain set of business requirements. In the presented examples, we want to show both simpler and more complex use cases. For this reason, our business domain must possess a certain level of complexity. On the other hand, we obviously do not want the complexity of the presented domain to hinder the understanding of the examples. 
+For this reason, we have chosen a domain that will probably be at least partially familiar to the reader - it will be the sphere of higher education institutions' functioning. Of course, for the purposes of our examples, we will simplify the real business processes a bit and focus only on a few of them. It will therefore be an excerpt of a somewhat simplified reality, which I hope will be enough to present both simpler and more complex implementation examples.
