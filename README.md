@@ -28,3 +28,6 @@ The operation of the university requires the cooperation of many different depar
 
 This description outlines the institution we will be working with. We will not be handling all processes related to the operation of the university. 
 We are to focus on managing processes related to the recruitment of candidates for studies and the promotion of students to the next semester.
+
+## Business requirements
+![plot](./docs/images/process.png)
