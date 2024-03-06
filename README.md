@@ -165,4 +165,4 @@ Great, let me know if you need any additional information.
 Base on the inverview our analyst created various artifacts.
 
 ### Use case diagram
-![plot](./docs/images/use-case.png.png)
+![plot](./docs/images/use-case.png)
