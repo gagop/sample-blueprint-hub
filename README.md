@@ -38,7 +38,7 @@ Analyst:
 Could you briefly describe how the recruitment process is conducted?
 
 Employee:
-Sure, the recruitment process involves a few steps. The first step occurs when the potential candidate registers through the online system. After registration, we set up an appointment at our university. The potential candidate must show up with additional documents, like a "świadectwo maturalne." We manually verify that all the necessary documents are correct. If everything is in order, they are given the contract to sign. The final step is to pay the "wpisowe." Usually, the student has around two weeks to make this payment. After that, they are enrolled or advanced to the first semester.
+Sure, the recruitment process involves a few steps. The first step occurs when the potential candidate registers through the online system. After registration, we would like to set up an appointment at our university. The potential candidate must show up with additional documents which proves that you qualify to university-level education. We manually verify that all the necessary documents are correct. If everything is in order, they are given the contract to sign. The final step is to pay the admission fee. Usually, the student has around two weeks to make this payment. After that, they are enrolled and advanced to the first semester.
 
 Analyst:
 Let's delve deeper into the individual steps. In the first step, the candidate must register through the online system. Is this the only way for a candidate to start the process, or can they, for example, visit your office personally, and you register them?
@@ -86,7 +86,7 @@ Analyst:
 What happens during the meeting? What kind of additional documents must the students show?
 
 Employee:
-The candidate usually has to bring documents proving they have completed their "matura." However, if someone is applying for master's studies, they must bring their bachelor's degree certificate.
+The candidate usually has to bring documents proving they they qualify to study at university. For example, if someone is applying for master's studies, they must bring their bachelor's degree certificate.
 
 Analyst:
 So, the documents they must bring depend on the study program they chose in the first step?
