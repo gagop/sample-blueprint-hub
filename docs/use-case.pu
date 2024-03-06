@@ -1,0 +1,22 @@
+@startuml
+left to right direction
+actor "Candidate" as fc
+actor "Recruitment Office Employee" as fc2
+actor "End of recruitment" as fc3
+rectangle University {
+  usecase "1. Register for Studies" as UC1
+  usecase "2. Display Meeting Date" as UC2
+  usecase "3. Schedule a Meeting" as UC3
+  usecase "4. Cancel a Meeting" as UC4
+  usecase "5. Confirm Candidate's Documents" as UC5
+  usecase "6. Confirm Payment of Admission Fee" as UC6
+  usecase "7. Cancel Unfinished Registrations" as UC7
+}
+fc -- UC1
+fc -- UC2
+fc2 -- UC3
+fc2 -- UC4
+fc2 -- UC5
+fc2 -- UC6
+fc3 -- UC7
+@enduml
