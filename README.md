@@ -162,7 +162,15 @@ Great, let me know if you need any additional information.
 
 
 ## Business analysis artifacts
-Base on the inverview our analyst created various artifacts.
+Based on the requirements, we will need to develop several applications:
+
+- A frontend application for the candidate.
+- A frontend application for the Recruitment Office employee.
+- A backend application to support the frontend applications.
+
+In our current example, we will focus on the backend. For now, we will not delve into details regarding the discussion of architecture of the complete solution. Our concentration is on implementing the backend.
+
+Based on the inverview our analyst created various artifacts.
 
 ### Use case diagram
 ![plot](./docs/images/use-case.png)
