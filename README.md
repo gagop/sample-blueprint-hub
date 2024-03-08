@@ -172,5 +172,10 @@ In our current example, we will focus on the backend. For now, we will not delve
 
 Based on the inverview our analyst created various artifacts.
 
+### Process
+Our analyst created a sketch of the process using some sticky cards.
+![plot](./docs/images/process.png)
+
 ### Use case diagram
+Our analyst created a use case diagram of all the use cases
 ![plot](./docs/images/use-case.png)
