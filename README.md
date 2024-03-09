@@ -170,7 +170,7 @@ Based on the requirements, we will need to develop several applications:
 
 In our current example, we will focus on the backend. For now, we will not delve into details regarding the discussion of architecture of the complete solution. Our concentration is on implementing the backend.
 
-Based on the inverview our analyst created various artifacts.
+The following artifacts are supposed to present typical examples of business analysis results that you may encounter in IT projects. They are supposed to give us a bit more insight into our requirements.
 
 ### Process
 Our analyst created a sketch of the process using some sticky cards.
