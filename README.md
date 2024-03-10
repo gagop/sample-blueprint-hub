@@ -174,6 +174,8 @@ The following artifacts are supposed to present typical examples of business ana
 
 ### Process
 Our analyst created a sketch of the process using some sticky cards.
+To clarify, this visualization does not result from an event storming process. Rather, it's an informal method used to represent the requirements we've gathered.
+
 ![plot](./docs/images/process.png)
 
 ### Use case diagram
@@ -182,5 +184,18 @@ Our analyst created a use case diagram of all the use cases
 
 ## Use case scenarios
 
-ID: 1
-Name: Registering 
+First use case is related to online application used by the candidate to register and start the addmission process.
+
+**ID**: 1
+**Name**: Registering a New Candidate
+**Actor**: Candidate
+**Pre-conditions**: Registrations for candidates are still open.
+**Post-conditions**: The database has saved the candidate's personal details, and we start the admissions process.
+
+**Main Flow:**
+1. The system asks the user to provide necessary details.
+2. The user provides their first name, last name, phone number, email address, home address, PESEL (Personal Identification Number), nationality, date of birth, and clicks the "Next" button.
+3. The system displays the screen where the user can choose their selected study program.
+4. The user selects the study program and clicks "Send."
+5. The system saves the information about the chosen study program.
+6. The system displays a message confirming that the data is saved.
