@@ -182,7 +182,7 @@ To clarify, this visualization does not result from an event storming process. R
 Our analyst created a use case diagram of all the use cases
 ![plot](./docs/images/use-case.png)
 
-## Use case scenarios
+### Use case scenarios
 
 First use case is related to online application used by the candidate to register and start the addmission process.
 
