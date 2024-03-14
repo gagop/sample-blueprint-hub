@@ -192,6 +192,7 @@ First use case is related to online application used by the candidate to registe
 **Pre-conditions**: Registrations for candidates are still open.
 **Post-conditions**: The database has saved the candidate's personal details, and we start the admissions process.
 
+
 **Main Flow:**
 1. The system asks the user to provide necessary details.
 2. The user provides their first name, last name, phone number, email address, home address, PESEL (Personal Identification Number), nationality, date of birth, and clicks the "Next" button.
