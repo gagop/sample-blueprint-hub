@@ -161,6 +161,7 @@ Thank you, I think I have some information to start with.
 Great, let me know if you need any additional information.
 
 
+
 ## Business analysis artifacts
 Based on the requirements, we will need to develop several applications:
 
