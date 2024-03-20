@@ -1,3 +1,5 @@
+using Gakko.API.Models;
+using Gakko.API.Services;
 using Microsoft.AspNetCore.Mvc;
 
 namespace Gakko.API.Controllers;
@@ -6,11 +8,21 @@ namespace Gakko.API.Controllers;
 [Route("api/recruitments")]
 public class RecruitmentsController : ControllerBase
 {
+    private readonly IRecruitmentsService _recruitmentService;
+
+    public RecruitmentsController(IRecruitmentsService recruitmentService)
+    {
+        _recruitmentService = recruitmentService;
+    }
 
     [HttpPost]
-    public IActionResult CreateRecruitment()
+    public async Task<IActionResult> CreateRecruitment(Student newCandidate)
     {
-        return Ok("1. Register for studies ");
+        var result = await _recruitmentService.CreateRecruitment(newCandidate);
+
+        if (!result) return BadRequest("Recruitment process cannot be started");
+
+        return StatusCode(StatusCodes.Status201Created, "Recruitment process was started successfully");
     }
 
     [HttpGet("meetings/current")]
@@ -48,5 +60,4 @@ public class RecruitmentsController : ControllerBase
     {
         return Ok("7. Cancel unfinished recruitments");
     }
-    
 }

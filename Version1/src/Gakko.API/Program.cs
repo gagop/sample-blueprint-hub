@@ -1,3 +1,7 @@
+using Gakko.API.Context;
+using Gakko.API.Services;
+using Microsoft.EntityFrameworkCore;
+
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
@@ -5,6 +9,8 @@ var builder = WebApplication.CreateBuilder(args);
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 builder.Services.AddControllers();
+builder.Services.AddDbContext<GakkoContext>(opt => opt.UseNpgsql(builder.Configuration.GetConnectionString("GakkoDb")));
+builder.Services.AddScoped<IRecruitmentsService, RecruitmentsService>();
 
 var app = builder.Build();
 
@@ -17,11 +23,6 @@ if (app.Environment.IsDevelopment())
 
 app.UseHttpsRedirection();
 app.UseRouting();
-
 app.MapControllers();
-// app.UseEndpoints(endpoints =>
-// {
-//     endpoints.MapControllers();
-// });
 
 app.Run();

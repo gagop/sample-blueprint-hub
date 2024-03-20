@@ -1,9 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
+﻿namespace Gakko.API.Models;
 
-namespace Gakko.API.Models;
-
-public partial class Student
+public class Student
 {
     public int Idcandidate { get; set; }
 
