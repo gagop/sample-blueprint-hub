@@ -14,12 +14,6 @@ public class RecruitmentsService : IRecruitmentsService
 
     public async Task<bool> CreateRecruitment(Student newCandidate)
     {
-        /*
-         * he candidate must provide their first name, last name, phone number, email address, home address, the study program they selected from our offerings, gender,
-         * PESEL number or passport number, nationality, and date of birth.
-         */
-
-
         await Task.Delay(1000);
 
         return true;
