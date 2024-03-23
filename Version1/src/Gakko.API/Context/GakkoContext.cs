@@ -28,9 +28,9 @@ public partial class GakkoContext : DbContext
 
     public virtual DbSet<Studylevel> Studylevels { get; set; }
 
-    public virtual DbSet<Studymode> Studymodes { get; set; }
+    public virtual DbSet<Studymode> StudyModes { get; set; }
 
-    public virtual DbSet<Studyprogrammer> Studyprogrammers { get; set; }
+    public virtual DbSet<Studyprogrammer> StudyProgrammes { get; set; }
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
@@ -116,52 +116,52 @@ public partial class GakkoContext : DbContext
 
         modelBuilder.Entity<Student>(entity =>
         {
-            entity.HasKey(e => e.Idcandidate).HasName("student_pk");
+            entity.HasKey(e => e.IdCandidate).HasName("student_pk");
 
             entity.ToTable("student");
 
-            entity.Property(e => e.Idcandidate)
+            entity.Property(e => e.IdCandidate)
                 .ValueGeneratedNever()
                 .HasColumnName("idcandidate");
-            entity.Property(e => e.Dateofbirth).HasColumnName("dateofbirth");
-            entity.Property(e => e.Emailaddress)
+            entity.Property(e => e.DateOfBirth).HasColumnName("dateofbirth");
+            entity.Property(e => e.EmailAddress)
                 .HasMaxLength(200)
                 .HasColumnName("emailaddress");
             entity.Property(e => e.Firstname)
                 .HasMaxLength(200)
                 .HasColumnName("firstname");
             entity.Property(e => e.Gender).HasColumnName("gender");
-            entity.Property(e => e.Homeaddress)
+            entity.Property(e => e.HomeAddress)
                 .HasMaxLength(255)
                 .HasColumnName("homeaddress");
-            entity.Property(e => e.Idnationality).HasColumnName("idnationality");
-            entity.Property(e => e.Idstatus).HasColumnName("idstatus");
-            entity.Property(e => e.Idstudyprogramme).HasColumnName("idstudyprogramme");
+            entity.Property(e => e.IdNationality).HasColumnName("idnationality");
+            entity.Property(e => e.IdStatus).HasColumnName("idstatus");
+            entity.Property(e => e.IdStudyProgramme).HasColumnName("idstudyprogramme");
             entity.Property(e => e.Lastname)
                 .HasMaxLength(200)
                 .HasColumnName("lastname");
-            entity.Property(e => e.Passportnumber)
+            entity.Property(e => e.PassportNumber)
                 .HasMaxLength(9)
                 .HasColumnName("passportnumber");
-            entity.Property(e => e.Peselnumber)
+            entity.Property(e => e.PeselNumber)
                 .HasMaxLength(11)
                 .HasColumnName("peselnumber");
-            entity.Property(e => e.Phonenumber)
+            entity.Property(e => e.PhoneNumber)
                 .HasMaxLength(200)
                 .HasColumnName("phonenumber");
 
-            entity.HasOne(d => d.IdnationalityNavigation).WithMany(p => p.Students)
-                .HasForeignKey(d => d.Idnationality)
+            entity.HasOne(d => d.NationalityNavigation).WithMany(p => p.Students)
+                .HasForeignKey(d => d.IdNationality)
                 .OnDelete(DeleteBehavior.ClientSetNull)
                 .HasConstraintName("candidate_nationality");
 
-            entity.HasOne(d => d.IdstatusNavigation).WithMany(p => p.Students)
-                .HasForeignKey(d => d.Idstatus)
+            entity.HasOne(d => d.StatusNavigation).WithMany(p => p.Students)
+                .HasForeignKey(d => d.IdStatus)
                 .OnDelete(DeleteBehavior.ClientSetNull)
                 .HasConstraintName("student_status");
 
-            entity.HasOne(d => d.IdstudyprogrammeNavigation).WithMany(p => p.Students)
-                .HasForeignKey(d => d.Idstudyprogramme)
+            entity.HasOne(d => d.StudyProgrammeNavigation).WithMany(p => p.Students)
+                .HasForeignKey(d => d.IdStudyProgramme)
                 .OnDelete(DeleteBehavior.ClientSetNull)
                 .HasConstraintName("candidate_studyprogrammer");
         });

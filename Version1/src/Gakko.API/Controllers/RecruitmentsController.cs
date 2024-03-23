@@ -1,4 +1,4 @@
-using Gakko.API.Models;
+using Gakko.API.DTOs;
 using Gakko.API.Services;
 using Microsoft.AspNetCore.Mvc;
 
@@ -16,13 +16,10 @@ public class RecruitmentsController : ControllerBase
     }
 
     [HttpPost]
-    public async Task<IActionResult> CreateRecruitment(Student newCandidate)
+    public async Task<IActionResult> CreateRecruitment(CreateRecruitmentDto newCandidate)
     {
-        var result = await _recruitmentService.CreateRecruitment(newCandidate);
-
-        if (!result) return BadRequest("Recruitment process cannot be started");
-
-        return StatusCode(StatusCodes.Status201Created, "Recruitment process was started successfully");
+        var candidate = await _recruitmentService.CreateRecruitment(newCandidate);
+        return StatusCode(StatusCodes.Status201Created, candidate);
     }
 
     [HttpGet("meetings/current")]
