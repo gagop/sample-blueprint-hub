@@ -1,4 +1,5 @@
 using Gakko.API.Context;
+using Gakko.API.Middlewares;
 using Gakko.API.Services;
 using Microsoft.EntityFrameworkCore;
 
@@ -12,6 +13,7 @@ builder.Services.AddScoped<IRecruitmentsService, RecruitmentsService>();
 
 var app = builder.Build();
 
+app.UseExceptionMiddleware();
 if (app.Environment.IsDevelopment())
 {
     app.UseSwagger();
