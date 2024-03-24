@@ -37,6 +37,14 @@ public class RecruitmentsService : IRecruitmentsService
         if (alreadyExists)
             throw new ArgumentException("Student already exists");
 
+        var birthdate = DateOnly.Parse(createRecruitmentDto.Birthdate);
+        var age = DateTime.Now.Year - birthdate.Year;
+        if (DateTime.Now.DayOfYear < birthdate.DayOfYear)
+            age--;
+
+        if (age < 18)
+            throw new ArgumentException("Candidate must be at least 18 years old");
+
         var status = await _dbContext.Statuses.FirstOrDefaultAsync(s => s.Name == "Candidate - registered");
 
         var candidate = new Student
