@@ -5,7 +5,7 @@ namespace Gakko.API.Models;
 
 public partial class Nationality
 {
-    public int Idnationality { get; set; }
+    public int IdNationality { get; set; }
 
     public string Name { get; set; } = null!;
 

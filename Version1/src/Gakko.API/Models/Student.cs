@@ -34,5 +34,5 @@ public class Student
 
     public virtual Status StatusNavigation { get; set; } = null!;
 
-    public virtual Studyprogrammer StudyProgrammeNavigation { get; set; } = null!;
+    public virtual StudyProgramme StudyProgrammeNavigation { get; set; } = null!;
 }

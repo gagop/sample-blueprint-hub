@@ -5,7 +5,7 @@ namespace Gakko.API.Models;
 
 public partial class Status
 {
-    public int Idstatus { get; set; }
+    public int IdStatus { get; set; }
 
     public string Name { get; set; } = null!;
 

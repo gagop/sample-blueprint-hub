@@ -18,7 +18,7 @@ public partial class GakkoContext : DbContext
 
     public virtual DbSet<Appointmentstatus> Appointmentstatuses { get; set; }
 
-    public virtual DbSet<Documenttype> Documenttypes { get; set; }
+    public virtual DbSet<DocumentType> Documenttypes { get; set; }
 
     public virtual DbSet<Nationality> Nationalities { get; set; }
 
@@ -26,45 +26,45 @@ public partial class GakkoContext : DbContext
 
     public virtual DbSet<Student> Students { get; set; }
 
-    public virtual DbSet<Studylevel> Studylevels { get; set; }
+    public virtual DbSet<StudyLevel> Studylevels { get; set; }
 
-    public virtual DbSet<Studymode> StudyModes { get; set; }
+    public virtual DbSet<StudyMode> StudyModes { get; set; }
 
-    public virtual DbSet<Studyprogrammer> StudyProgrammes { get; set; }
+    public virtual DbSet<StudyProgramme> StudyProgrammes { get; set; }
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
         modelBuilder.Entity<Appointment>(entity =>
         {
-            entity.HasKey(e => e.Idappointment).HasName("appointment_pk");
+            entity.HasKey(e => e.IdAppointment).HasName("appointment_pk");
 
             entity.ToTable("appointment");
 
-            entity.Property(e => e.Idappointment)
+            entity.Property(e => e.IdAppointment)
                 .ValueGeneratedNever()
                 .HasColumnName("idappointment");
             entity.Property(e => e.Date).HasColumnName("date");
-            entity.Property(e => e.Idappointmentstatus).HasColumnName("idappointmentstatus");
-            entity.Property(e => e.Idcandidate).HasColumnName("idcandidate");
+            entity.Property(e => e.IdAppointmentStatus).HasColumnName("idappointmentstatus");
+            entity.Property(e => e.IdCandidate).HasColumnName("idcandidate");
 
-            entity.HasOne(d => d.IdappointmentstatusNavigation).WithMany(p => p.Appointments)
-                .HasForeignKey(d => d.Idappointmentstatus)
+            entity.HasOne(d => d.AppointmentStatus).WithMany(p => p.Appointments)
+                .HasForeignKey(d => d.IdAppointmentStatus)
                 .OnDelete(DeleteBehavior.ClientSetNull)
                 .HasConstraintName("appointment_appointmentstatus");
 
-            entity.HasOne(d => d.IdcandidateNavigation).WithMany(p => p.Appointments)
-                .HasForeignKey(d => d.Idcandidate)
+            entity.HasOne(d => d.CandidateNavigation).WithMany(p => p.Appointments)
+                .HasForeignKey(d => d.IdCandidate)
                 .OnDelete(DeleteBehavior.ClientSetNull)
                 .HasConstraintName("appointment_candidate");
         });
 
         modelBuilder.Entity<Appointmentstatus>(entity =>
         {
-            entity.HasKey(e => e.Idappointmentstatus).HasName("appointmentstatus_pk");
+            entity.HasKey(e => e.IdAppointmentStatus).HasName("appointmentstatus_pk");
 
             entity.ToTable("appointmentstatus");
 
-            entity.Property(e => e.Idappointmentstatus)
+            entity.Property(e => e.IdAppointmentStatus)
                 .ValueGeneratedNever()
                 .HasColumnName("idappointmentstatus");
             entity.Property(e => e.Name)
@@ -72,13 +72,13 @@ public partial class GakkoContext : DbContext
                 .HasColumnName("name");
         });
 
-        modelBuilder.Entity<Documenttype>(entity =>
+        modelBuilder.Entity<DocumentType>(entity =>
         {
-            entity.HasKey(e => e.Iddocumenttype).HasName("documenttype_pk");
+            entity.HasKey(e => e.IdDocumentType).HasName("documenttype_pk");
 
             entity.ToTable("documenttype");
 
-            entity.Property(e => e.Iddocumenttype)
+            entity.Property(e => e.IdDocumentType)
                 .ValueGeneratedNever()
                 .HasColumnName("iddocumenttype");
             entity.Property(e => e.Name)
@@ -88,11 +88,11 @@ public partial class GakkoContext : DbContext
 
         modelBuilder.Entity<Nationality>(entity =>
         {
-            entity.HasKey(e => e.Idnationality).HasName("nationality_pk");
+            entity.HasKey(e => e.IdNationality).HasName("nationality_pk");
 
             entity.ToTable("nationality");
 
-            entity.Property(e => e.Idnationality)
+            entity.Property(e => e.IdNationality)
                 .ValueGeneratedNever()
                 .HasColumnName("idnationality");
             entity.Property(e => e.Name)
@@ -102,11 +102,11 @@ public partial class GakkoContext : DbContext
 
         modelBuilder.Entity<Status>(entity =>
         {
-            entity.HasKey(e => e.Idstatus).HasName("status_pk");
+            entity.HasKey(e => e.IdStatus).HasName("status_pk");
 
             entity.ToTable("status");
 
-            entity.Property(e => e.Idstatus)
+            entity.Property(e => e.IdStatus)
                 .ValueGeneratedNever()
                 .HasColumnName("idstatus");
             entity.Property(e => e.Name)
@@ -166,13 +166,13 @@ public partial class GakkoContext : DbContext
                 .HasConstraintName("candidate_studyprogrammer");
         });
 
-        modelBuilder.Entity<Studylevel>(entity =>
+        modelBuilder.Entity<StudyLevel>(entity =>
         {
-            entity.HasKey(e => e.Idstudylevel).HasName("studylevel_pk");
+            entity.HasKey(e => e.IdStudyLevel).HasName("studylevel_pk");
 
             entity.ToTable("studylevel");
 
-            entity.Property(e => e.Idstudylevel)
+            entity.Property(e => e.IdStudyLevel)
                 .ValueGeneratedNever()
                 .HasColumnName("idstudylevel");
             entity.Property(e => e.Name)
@@ -180,13 +180,13 @@ public partial class GakkoContext : DbContext
                 .HasColumnName("name");
         });
 
-        modelBuilder.Entity<Studymode>(entity =>
+        modelBuilder.Entity<StudyMode>(entity =>
         {
-            entity.HasKey(e => e.Idstudymode).HasName("studymode_pk");
+            entity.HasKey(e => e.IdStudyMode).HasName("studymode_pk");
 
             entity.ToTable("studymode");
 
-            entity.Property(e => e.Idstudymode)
+            entity.Property(e => e.IdStudyMode)
                 .ValueGeneratedNever()
                 .HasColumnName("idstudymode");
             entity.Property(e => e.Name)
@@ -194,41 +194,41 @@ public partial class GakkoContext : DbContext
                 .HasColumnName("name");
         });
 
-        modelBuilder.Entity<Studyprogrammer>(entity =>
+        modelBuilder.Entity<StudyProgramme>(entity =>
         {
-            entity.HasKey(e => e.Idstudyprogramme).HasName("studyprogrammer_pk");
+            entity.HasKey(e => e.IdStudyProgramme).HasName("studyprogrammer_pk");
 
             entity.ToTable("studyprogrammer");
 
-            entity.Property(e => e.Idstudyprogramme)
+            entity.Property(e => e.IdStudyProgramme)
                 .ValueGeneratedNever()
                 .HasColumnName("idstudyprogramme");
-            entity.Property(e => e.Idstudylevel).HasColumnName("idstudylevel");
-            entity.Property(e => e.Idstudymode).HasColumnName("idstudymode");
+            entity.Property(e => e.IdStudyLevel).HasColumnName("idstudylevel");
+            entity.Property(e => e.IdStudyMode).HasColumnName("idstudymode");
             entity.Property(e => e.Name)
                 .HasMaxLength(100)
                 .HasColumnName("name");
-            entity.Property(e => e.Recruitmentend).HasColumnName("recruitmentend");
-            entity.Property(e => e.Recruitmentstart).HasColumnName("recruitmentstart");
+            entity.Property(e => e.RecruitmentEnd).HasColumnName("recruitmentend");
+            entity.Property(e => e.RecruitmentStart).HasColumnName("recruitmentstart");
 
-            entity.HasOne(d => d.IdstudylevelNavigation).WithMany(p => p.Studyprogrammers)
-                .HasForeignKey(d => d.Idstudylevel)
+            entity.HasOne(d => d.StudyLevel).WithMany(p => p.StudyProgrammes)
+                .HasForeignKey(d => d.IdStudyLevel)
                 .OnDelete(DeleteBehavior.ClientSetNull)
                 .HasConstraintName("studyprogrammer_studycycle");
 
-            entity.HasOne(d => d.IdstudymodeNavigation).WithMany(p => p.Studyprogrammers)
-                .HasForeignKey(d => d.Idstudymode)
+            entity.HasOne(d => d.StudyMode).WithMany(p => p.StudyProgrammes)
+                .HasForeignKey(d => d.IdStudyMode)
                 .OnDelete(DeleteBehavior.ClientSetNull)
                 .HasConstraintName("studyprogrammer_studymode");
 
-            entity.HasMany(d => d.Iddocumenttypes).WithMany(p => p.Idstudyprogrammes)
+            entity.HasMany(d => d.IdDocumentTypes).WithMany(p => p.StudyProgrammes)
                 .UsingEntity<Dictionary<string, object>>(
                     "Requiredenrollmentdocument",
-                    r => r.HasOne<Documenttype>().WithMany()
+                    r => r.HasOne<DocumentType>().WithMany()
                         .HasForeignKey("Iddocumenttype")
                         .OnDelete(DeleteBehavior.ClientSetNull)
                         .HasConstraintName("requiredenrollmentdocument_documenttype"),
-                    l => l.HasOne<Studyprogrammer>().WithMany()
+                    l => l.HasOne<StudyProgramme>().WithMany()
                         .HasForeignKey("Idstudyprogramme")
                         .OnDelete(DeleteBehavior.ClientSetNull)
                         .HasConstraintName("requiredenrollmentdocument_studyprogrammer"),

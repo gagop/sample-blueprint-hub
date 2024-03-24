@@ -1,19 +1,16 @@
-﻿using System;
-using System.Collections.Generic;
+﻿namespace Gakko.API.Models;
 
-namespace Gakko.API.Models;
-
-public partial class Appointment
+public class Appointment
 {
-    public int Idappointment { get; set; }
+    public int IdAppointment { get; set; }
 
     public DateOnly Date { get; set; }
 
-    public int Idappointmentstatus { get; set; }
+    public int IdAppointmentStatus { get; set; }
 
-    public int Idcandidate { get; set; }
+    public int IdCandidate { get; set; }
 
-    public virtual Appointmentstatus IdappointmentstatusNavigation { get; set; } = null!;
+    public virtual Appointmentstatus AppointmentStatus { get; set; } = null!;
 
-    public virtual Student IdcandidateNavigation { get; set; } = null!;
+    public virtual Student CandidateNavigation { get; set; } = null!;
 }
