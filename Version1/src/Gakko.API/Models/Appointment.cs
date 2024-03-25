@@ -10,7 +10,7 @@ public class Appointment
 
     public int IdCandidate { get; set; }
 
-    public virtual Appointmentstatus AppointmentStatus { get; set; } = null!;
+    public virtual AppointmentStatus AppointmentStatus { get; set; } = null!;
 
     public virtual Student CandidateNavigation { get; set; } = null!;
 }

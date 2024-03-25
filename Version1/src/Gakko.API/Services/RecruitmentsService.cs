@@ -16,7 +16,7 @@ public class RecruitmentsService : IRecruitmentsService
 
     public async Task<Student> CreateRecruitment(CreateRecruitmentDto createRecruitmentDto)
     {
-        if (string.IsNullOrWhiteSpace(createRecruitmentDto.Pesel) &&
+        if (string.IsNullOrWhiteSpace(createRecruitmentDto.Pesel) ||
             string.IsNullOrWhiteSpace(createRecruitmentDto.Passport))
             throw new ArgumentException("PESEL or Passport number is required");
 
@@ -49,8 +49,8 @@ public class RecruitmentsService : IRecruitmentsService
 
         var candidate = new Student
         {
-            Firstname = createRecruitmentDto.FirstName,
-            Lastname = createRecruitmentDto.LastName,
+            FirstName = createRecruitmentDto.FirstName,
+            LastName = createRecruitmentDto.LastName,
             PeselNumber = createRecruitmentDto.Pesel,
             PassportNumber = createRecruitmentDto.Passport,
             EmailAddress = createRecruitmentDto.Email,

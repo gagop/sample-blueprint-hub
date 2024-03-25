@@ -16,9 +16,9 @@ public partial class GakkoContext : DbContext
 
     public virtual DbSet<Appointment> Appointments { get; set; }
 
-    public virtual DbSet<Appointmentstatus> Appointmentstatuses { get; set; }
+    public virtual DbSet<AppointmentStatus> AppointmentStatuses { get; set; }
 
-    public virtual DbSet<DocumentType> Documenttypes { get; set; }
+    public virtual DbSet<DocumentType> DocumentTypes { get; set; }
 
     public virtual DbSet<Nationality> Nationalities { get; set; }
 
@@ -26,7 +26,7 @@ public partial class GakkoContext : DbContext
 
     public virtual DbSet<Student> Students { get; set; }
 
-    public virtual DbSet<StudyLevel> Studylevels { get; set; }
+    public virtual DbSet<StudyLevel> StudyLevels { get; set; }
 
     public virtual DbSet<StudyMode> StudyModes { get; set; }
 
@@ -34,6 +34,8 @@ public partial class GakkoContext : DbContext
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
+        SeedDatabase(modelBuilder);
+
         modelBuilder.Entity<Appointment>(entity =>
         {
             entity.HasKey(e => e.IdAppointment).HasName("appointment_pk");
@@ -58,7 +60,7 @@ public partial class GakkoContext : DbContext
                 .HasConstraintName("appointment_candidate");
         });
 
-        modelBuilder.Entity<Appointmentstatus>(entity =>
+        modelBuilder.Entity<AppointmentStatus>(entity =>
         {
             entity.HasKey(e => e.IdAppointmentStatus).HasName("appointmentstatus_pk");
 
@@ -127,7 +129,7 @@ public partial class GakkoContext : DbContext
             entity.Property(e => e.EmailAddress)
                 .HasMaxLength(200)
                 .HasColumnName("emailaddress");
-            entity.Property(e => e.Firstname)
+            entity.Property(e => e.FirstName)
                 .HasMaxLength(200)
                 .HasColumnName("firstname");
             entity.Property(e => e.Gender).HasColumnName("gender");
@@ -137,7 +139,7 @@ public partial class GakkoContext : DbContext
             entity.Property(e => e.IdNationality).HasColumnName("idnationality");
             entity.Property(e => e.IdStatus).HasColumnName("idstatus");
             entity.Property(e => e.IdStudyProgramme).HasColumnName("idstudyprogramme");
-            entity.Property(e => e.Lastname)
+            entity.Property(e => e.LastName)
                 .HasMaxLength(200)
                 .HasColumnName("lastname");
             entity.Property(e => e.PassportNumber)
@@ -242,6 +244,83 @@ public partial class GakkoContext : DbContext
         });
 
         OnModelCreatingPartial(modelBuilder);
+    }
+
+    private static void SeedDatabase(ModelBuilder modelBuilder)
+    {
+        modelBuilder.Entity<Nationality>().HasData(
+            new Nationality { IdNationality = 1, Name = "American" },
+            new Nationality { IdNationality = 2, Name = "Canadian" },
+            new Nationality { IdNationality = 3, Name = "British" },
+            new Nationality { IdNationality = 4, Name = "Australian" },
+            new Nationality { IdNationality = 5, Name = "French" },
+            new Nationality { IdNationality = 6, Name = "German" },
+            new Nationality { IdNationality = 7, Name = "Polish" }
+        );
+
+        modelBuilder.Entity<Status>().HasData(
+            new Status { IdStatus = 1, Name = "Candidate - registered" },
+            new Status { IdStatus = 2, Name = "Candidate - waiting for documents" },
+            new Status { IdStatus = 3, Name = "Candidate - waiting for signing contract" },
+            new Status { IdStatus = 4, Name = "Candidate - waiting for payment" },
+            new Status { IdStatus = 5, Name = "Student" },
+            new Status { IdStatus = 6, Name = "Graduate" },
+            new Status { IdStatus = 7, Name = "Student on leave" }
+        );
+
+        modelBuilder.Entity<StudyMode>().HasData(
+            new StudyMode { IdStudyMode = 1, Name = "Full-time" },
+            new StudyMode { IdStudyMode = 2, Name = "Part-time" }
+        );
+
+        modelBuilder.Entity<StudyLevel>().HasData(
+            new StudyLevel { IdStudyLevel = 1, Name = "Bachelor" },
+            new StudyLevel { IdStudyLevel = 2, Name = "Master" },
+            new StudyLevel { IdStudyLevel = 3, Name = "Doctoral" }
+        );
+
+        modelBuilder.Entity<StudyProgramme>().HasData(
+            new StudyProgramme
+            {
+                IdStudyProgramme = 1, IdStudyLevel = 1, IdStudyMode = 1, Name = "Computer Science",
+                RecruitmentStart = new DateOnly(2022, 1, 1), RecruitmentEnd = new DateOnly(2022, 9, 30)
+            },
+            new StudyProgramme
+            {
+                IdStudyProgramme = 2, IdStudyLevel = 1, IdStudyMode = 1, Name = "Information Technology",
+                RecruitmentStart = new DateOnly(2022, 1, 1), RecruitmentEnd = new DateOnly(2022, 9, 30)
+            },
+            new StudyProgramme
+            {
+                IdStudyProgramme = 3, IdStudyLevel = 1, IdStudyMode = 1, Name = "Software Engineering",
+                RecruitmentStart = new DateOnly(2022, 1, 1), RecruitmentEnd = new DateOnly(2022, 9, 30)
+            },
+            new StudyProgramme
+            {
+                IdStudyProgramme = 4, IdStudyLevel = 2, IdStudyMode = 1, Name = "Computer Science",
+                RecruitmentStart = new DateOnly(2022, 1, 1), RecruitmentEnd = new DateOnly(2022, 9, 30)
+            },
+            new StudyProgramme
+            {
+                IdStudyProgramme = 5, IdStudyLevel = 2, IdStudyMode = 1, Name = "Information Technology",
+                RecruitmentStart = new DateOnly(2022, 1, 1), RecruitmentEnd = new DateOnly(2022, 9, 30)
+            },
+            new StudyProgramme
+            {
+                IdStudyProgramme = 6, IdStudyLevel = 2, IdStudyMode = 1, Name = "Software Engineering",
+                RecruitmentStart = new DateOnly(2022, 1, 1), RecruitmentEnd = new DateOnly(2022, 9, 30)
+            }
+        );
+
+        modelBuilder.Entity<DocumentType>().HasData(
+            new DocumentType { IdDocumentType = 1, Name = "High school diploma" },
+            new DocumentType { IdDocumentType = 2, Name = "Bachelor's degree" },
+            new DocumentType { IdDocumentType = 3, Name = "Master's degree" },
+            new DocumentType { IdDocumentType = 4, Name = "Doctoral degree" },
+            new DocumentType { IdDocumentType = 5, Name = "English language certificate" },
+            new DocumentType { IdDocumentType = 6, Name = "Passport" },
+            new DocumentType { IdDocumentType = 7, Name = "Photo" }
+        );
     }
 
     partial void OnModelCreatingPartial(ModelBuilder modelBuilder);

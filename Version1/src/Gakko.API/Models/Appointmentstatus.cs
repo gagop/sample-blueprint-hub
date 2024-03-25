@@ -1,6 +1,6 @@
 ﻿namespace Gakko.API.Models;
 
-public class Appointmentstatus
+public class AppointmentStatus
 {
     public int IdAppointmentStatus { get; set; }
 
