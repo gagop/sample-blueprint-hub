@@ -50,8 +50,9 @@ public class RecruitmentsService : IRecruitmentsService
         if (createRecruitmentDto.Pesel.Length != 11)
             throw new ArgumentException("PESEL number must be 11 characters long");
 
-        var peselRegex = new Regex("[0-9]{4}[0-3]{1}[0-9}{1}[0-9]{5}");
-        if (!peselRegex.IsMatch(createRecruitmentDto.Pesel))
+        var matchTimeout = TimeSpan.FromSeconds(2);
+        if (!Regex.IsMatch(createRecruitmentDto.Pesel, "[0-9]{4}[0-3]{1}[0-9}{1}[0-9]{5}", RegexOptions.None,
+                matchTimeout))
             throw new ArgumentException("Invalid PESEL number");
 
         var status = await _dbContext.Statuses.FirstOrDefaultAsync(s => s.Name == "Candidate - registered");
