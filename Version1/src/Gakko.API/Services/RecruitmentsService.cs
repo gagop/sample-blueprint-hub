@@ -78,8 +78,15 @@ public class RecruitmentsService : IRecruitmentsService
         return candidate;
     }
 
-    public Task<Appointment> GetCurrentAppointment(int idStudent)
+    public async Task<Appointment> GetCurrentAppointment(int idStudent)
     {
-        throw new NotImplementedException();
+        var candidate = _dbContext.Students.Find(idStudent);
+        if (candidate is null)
+            throw new ArgumentException("Candidate not found");
+
+        var appointment = await _dbContext.Appointments.SingleOrDefaultAsync(a => a.IdCandidate == idStudent
+            && a.AppointmentStatus.Name == "Scheduled");
+
+        return null;
     }
 }

@@ -321,6 +321,12 @@ public partial class GakkoContext : DbContext
             new DocumentType { IdDocumentType = 6, Name = "Passport" },
             new DocumentType { IdDocumentType = 7, Name = "Photo" }
         );
+
+        modelBuilder.Entity<AppointmentStatus>().HasData(
+            new AppointmentStatus { IdAppointmentStatus = 1, Name = "Scheduled" },
+            new AppointmentStatus { IdAppointmentStatus = 2, Name = "Cancelled" },
+            new AppointmentStatus { IdAppointmentStatus = 3, Name = "Done" }
+        );
     }
 
     partial void OnModelCreatingPartial(ModelBuilder modelBuilder);

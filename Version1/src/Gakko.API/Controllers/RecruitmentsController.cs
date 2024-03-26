@@ -35,7 +35,8 @@ public class RecruitmentsController : ControllerBase
     [HttpGet("recruitments/{idStudent:int}/currentAppointment")]
     public IActionResult GetMeetingInfo(int idStudent)
     {
-        return Ok("2. Display current meeting time");
+        var result = _recruitmentService.GetCurrentAppointment(idStudent);
+        return Ok(result);
     }
 
     [HttpPost("meetings")]
