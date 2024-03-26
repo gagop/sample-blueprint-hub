@@ -43,7 +43,7 @@ public partial class GakkoContext : DbContext
             entity.ToTable("appointment");
 
             entity.Property(e => e.IdAppointment)
-                .ValueGeneratedNever()
+                .ValueGeneratedOnAdd()
                 .HasColumnName("idappointment");
             entity.Property(e => e.Date).HasColumnName("date");
             entity.Property(e => e.IdAppointmentStatus).HasColumnName("idappointmentstatus");
@@ -67,7 +67,7 @@ public partial class GakkoContext : DbContext
             entity.ToTable("appointmentstatus");
 
             entity.Property(e => e.IdAppointmentStatus)
-                .ValueGeneratedNever()
+                .ValueGeneratedOnAdd()
                 .HasColumnName("idappointmentstatus");
             entity.Property(e => e.Name)
                 .HasMaxLength(100)
@@ -81,7 +81,7 @@ public partial class GakkoContext : DbContext
             entity.ToTable("documenttype");
 
             entity.Property(e => e.IdDocumentType)
-                .ValueGeneratedNever()
+                .ValueGeneratedOnAdd()
                 .HasColumnName("iddocumenttype");
             entity.Property(e => e.Name)
                 .HasMaxLength(100)
@@ -95,7 +95,7 @@ public partial class GakkoContext : DbContext
             entity.ToTable("nationality");
 
             entity.Property(e => e.IdNationality)
-                .ValueGeneratedNever()
+                .ValueGeneratedOnAdd()
                 .HasColumnName("idnationality");
             entity.Property(e => e.Name)
                 .HasMaxLength(100)
@@ -109,7 +109,7 @@ public partial class GakkoContext : DbContext
             entity.ToTable("status");
 
             entity.Property(e => e.IdStatus)
-                .ValueGeneratedNever()
+                .ValueGeneratedOnAdd()
                 .HasColumnName("idstatus");
             entity.Property(e => e.Name)
                 .HasMaxLength(200)
@@ -123,7 +123,7 @@ public partial class GakkoContext : DbContext
             entity.ToTable("student");
 
             entity.Property(e => e.IdCandidate)
-                .ValueGeneratedNever()
+                .ValueGeneratedOnAdd()
                 .HasColumnName("idcandidate");
             entity.Property(e => e.DateOfBirth).HasColumnName("dateofbirth");
             entity.Property(e => e.EmailAddress)
@@ -175,7 +175,7 @@ public partial class GakkoContext : DbContext
             entity.ToTable("studylevel");
 
             entity.Property(e => e.IdStudyLevel)
-                .ValueGeneratedNever()
+                .ValueGeneratedOnAdd()
                 .HasColumnName("idstudylevel");
             entity.Property(e => e.Name)
                 .HasMaxLength(100)
@@ -189,7 +189,7 @@ public partial class GakkoContext : DbContext
             entity.ToTable("studymode");
 
             entity.Property(e => e.IdStudyMode)
-                .ValueGeneratedNever()
+                .ValueGeneratedOnAdd()
                 .HasColumnName("idstudymode");
             entity.Property(e => e.Name)
                 .HasMaxLength(100)
@@ -203,7 +203,7 @@ public partial class GakkoContext : DbContext
             entity.ToTable("studyprogrammer");
 
             entity.Property(e => e.IdStudyProgramme)
-                .ValueGeneratedNever()
+                .ValueGeneratedOnAdd()
                 .HasColumnName("idstudyprogramme");
             entity.Property(e => e.IdStudyLevel).HasColumnName("idstudylevel");
             entity.Property(e => e.IdStudyMode).HasColumnName("idstudymode");

@@ -3,6 +3,7 @@ using System;
 using Gakko.API.Context;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 
@@ -11,9 +12,11 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace Gakko.API.Migrations
 {
     [DbContext(typeof(GakkoContext))]
-    partial class GakkoContextModelSnapshot : ModelSnapshot
+    [Migration("20240326084634_AddAutomaticallyGeneratedPKs")]
+    partial class AddAutomaticallyGeneratedPKs
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder

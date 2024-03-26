@@ -1,3 +1,4 @@
+using System.Text.RegularExpressions;
 using Gakko.API.Context;
 using Gakko.API.DTOs;
 using Gakko.API.Models;
@@ -45,17 +46,25 @@ public class RecruitmentsService : IRecruitmentsService
         if (age < 18)
             throw new ArgumentException("Candidate must be at least 18 years old");
 
+        //Validate pesel number
+        if (createRecruitmentDto.Pesel.Length != 11)
+            throw new ArgumentException("PESEL number must be 11 characters long");
+
+        var peselRegex = new Regex("[0-9]{4}[0-3]{1}[0-9}{1}[0-9]{5}");
+        if (!peselRegex.IsMatch(createRecruitmentDto.Pesel))
+            throw new ArgumentException("Invalid PESEL number");
+
         var status = await _dbContext.Statuses.FirstOrDefaultAsync(s => s.Name == "Candidate - registered");
 
         var candidate = new Student
         {
-            FirstName = createRecruitmentDto.FirstName,
-            LastName = createRecruitmentDto.LastName,
-            PeselNumber = createRecruitmentDto.Pesel,
-            PassportNumber = createRecruitmentDto.Passport,
-            EmailAddress = createRecruitmentDto.Email,
-            HomeAddress = createRecruitmentDto.Address,
-            PhoneNumber = createRecruitmentDto.Phone,
+            FirstName = createRecruitmentDto.FirstName.Trim(),
+            LastName = createRecruitmentDto.LastName.Trim(),
+            PeselNumber = createRecruitmentDto.Pesel.Trim(),
+            PassportNumber = createRecruitmentDto.Passport.Trim(),
+            EmailAddress = createRecruitmentDto.Email.Trim(),
+            HomeAddress = createRecruitmentDto.Address.Trim(),
+            PhoneNumber = createRecruitmentDto.Phone.Trim(),
             Gender = createRecruitmentDto.Gender == "M" ? 0 : 1,
             DateOfBirth = DateOnly.Parse(createRecruitmentDto.Birthdate),
             NationalityNavigation = nationality,

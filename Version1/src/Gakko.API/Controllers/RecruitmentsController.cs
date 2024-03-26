@@ -22,8 +22,8 @@ public class RecruitmentsController : ControllerBase
         return StatusCode(StatusCodes.Status201Created, candidate);
     }
 
-    [HttpGet("meetings/current")]
-    public IActionResult GetMeetingInfo()
+    [HttpGet("recruitments/{idStudent:int}/currentMeeting")]
+    public IActionResult GetMeetingInfo(int idStudent)
     {
         return Ok("2. Display current meeting time");
     }
