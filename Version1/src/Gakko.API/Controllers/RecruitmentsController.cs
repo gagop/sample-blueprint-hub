@@ -15,6 +15,11 @@ public class RecruitmentsController : ControllerBase
         _recruitmentService = recruitmentService;
     }
 
+    /// <summary>
+    ///     Endpoint used to start a new recruitment process for a candidate
+    /// </summary>
+    /// <param name="newCandidate">Candidate's personal details required to begin the recruitment process</param>
+    /// <returns></returns>
     [HttpPost]
     public async Task<IActionResult> CreateRecruitment(CreateRecruitmentDto newCandidate)
     {
@@ -22,7 +27,12 @@ public class RecruitmentsController : ControllerBase
         return StatusCode(StatusCodes.Status201Created, candidate);
     }
 
-    [HttpGet("recruitments/{idStudent:int}/currentMeeting")]
+    /// <summary>
+    ///     Endpoint used to check the current meeting time for a candidate
+    /// </summary>
+    /// <param name="idStudent">Candidate's id</param>
+    /// <returns></returns>
+    [HttpGet("recruitments/{idStudent:int}/currentAppointment")]
     public IActionResult GetMeetingInfo(int idStudent)
     {
         return Ok("2. Display current meeting time");

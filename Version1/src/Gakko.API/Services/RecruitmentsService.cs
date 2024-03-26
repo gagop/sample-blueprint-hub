@@ -77,4 +77,9 @@ public class RecruitmentsService : IRecruitmentsService
 
         return candidate;
     }
+
+    public Task<Appointment> GetCurrentAppointment(int idStudent)
+    {
+        throw new NotImplementedException();
+    }
 }
