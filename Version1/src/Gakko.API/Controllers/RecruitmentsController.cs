@@ -33,13 +33,13 @@ public class RecruitmentsController : ControllerBase
     /// <param name="idStudent">Candidate's id</param>
     /// <returns></returns>
     [HttpGet("recruitments/{idStudent:int}/currentAppointment")]
-    public IActionResult GetMeetingInfo(int idStudent)
+    public async Task<IActionResult> GetCurrentAppointmentInfo(int idStudent)
     {
-        var result = _recruitmentService.GetCurrentAppointment(idStudent);
+        var result = await _recruitmentService.GetCurrentAppointment(idStudent);
         return Ok(result);
     }
 
-    [HttpPost("meetings")]
+    [HttpPost("recruitments/{idStudent:int}/currentAppointment")]
     public IActionResult CreateMeeting()
     {
         return Ok("3. Schedule a new meeting");

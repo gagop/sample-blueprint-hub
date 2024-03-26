@@ -81,13 +81,18 @@ public class RecruitmentsService : IRecruitmentsService
 
     public async Task<Appointment> GetCurrentAppointment(int idStudent)
     {
-        var candidate = _dbContext.Students.Find(idStudent);
+        var candidate = await _dbContext.Students.Include(c => c.StatusNavigation)
+            .FirstOrDefaultAsync(c => c.IdCandidate == idStudent);
+
         if (candidate is null)
             throw new ArgumentException("Candidate not found");
 
-        var appointment = await _dbContext.Appointments.SingleOrDefaultAsync(a => a.IdCandidate == idStudent
-            && a.AppointmentStatus.Name == "Scheduled");
+        if (candidate.StatusNavigation.Name != "Candidate - registered")
+            throw new ArgumentException("Candidate is not registered");
 
-        return null;
+        var appointment = await _dbContext.Appointments.OrderByDescending(app => app.Date)
+            .FirstOrDefaultAsync(app => app.IdCandidate == idStudent);
+
+        return appointment;
     }
 }
