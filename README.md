@@ -187,9 +187,13 @@ Our analyst created a use case diagram of all the use cases
 First use case is related to online application used by the candidate to register and start the addmission process.
 
 **ID**: 1
+
 **Name**: Registering a New Candidate
+
 **Actor**: Candidate
+
 **Pre-conditions**: Registrations for candidates are still open.
+
 **Post-conditions**: The database has saved the candidate's personal details, and we start the admissions process.
 
 
