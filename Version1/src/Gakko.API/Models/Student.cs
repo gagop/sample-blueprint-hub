@@ -35,4 +35,6 @@ public class Student
     public virtual Status StatusNavigation { get; set; } = null!;
 
     public virtual StudyProgramme StudyProgrammeNavigation { get; set; } = null!;
+
+    public virtual ICollection<CandidatesDocument> CandidatesDocuments { get; set; } = new List<CandidatesDocument>();
 }

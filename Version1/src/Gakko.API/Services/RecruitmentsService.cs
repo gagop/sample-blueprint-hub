@@ -145,4 +145,30 @@ public class RecruitmentsService : IRecruitmentsService
         await _dbContext.SaveChangesAsync();
         return appointment;
     }
+
+    public async Task CancelAppointment(int idStudent)
+    {
+        var candidate = await _dbContext.Students.Include(c => c.StatusNavigation)
+            .FirstOrDefaultAsync(c => c.IdCandidate == idStudent);
+
+        if (candidate is null)
+            throw new ArgumentException("Candidate not found");
+
+        var appointmentsToCancel = await _dbContext.Appointments.Include(app => app.AppointmentStatus)
+            .Where(a => a.IdCandidate == idStudent).ToListAsync();
+        foreach (var appointment in appointmentsToCancel)
+            appointment.AppointmentStatus =
+                await _dbContext.AppointmentStatuses.SingleAsync(s => s.Name == "Cancelled");
+        await _dbContext.SaveChangesAsync();
+        await _appointmentManagerService.CancelAppointmentsForCandidate(idStudent);
+    }
+
+    public async Task ConfirmDocument(int idStudent, int idDocument)
+    {
+        var candidate = await _dbContext.Students.Include(c => c.StatusNavigation)
+            .FirstOrDefaultAsync(c => c.IdCandidate == idStudent);
+
+        if (candidate is null)
+            throw new ArgumentException("Candidate not found");
+    }
 }

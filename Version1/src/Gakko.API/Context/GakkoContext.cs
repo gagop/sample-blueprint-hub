@@ -243,6 +243,23 @@ public partial class GakkoContext : DbContext
                     });
         });
 
+        modelBuilder.Entity<CandidatesDocument>(entity =>
+        {
+            entity.HasKey(e => new
+            {
+                e.IdCandidate,
+                e.IdDocumentType
+            }).HasName("candidatesdocument_pk");
+
+            entity.ToTable("candidatesdocument");
+
+            entity.Property(e => e.ConfirmedAt).HasColumnName("confirmedat");
+            entity.HasOne(e => e.Candidate)
+                .WithMany(e => e.CandidatesDocuments);
+            entity.HasOne(e => e.DocumentType)
+                .WithMany(e => e.CandidatesDocuments);
+        });
+
         OnModelCreatingPartial(modelBuilder);
     }
 

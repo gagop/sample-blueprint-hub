@@ -51,14 +51,15 @@ public class RecruitmentsController : ControllerBase
         return StatusCode(StatusCodes.Status201Created, meeting);
     }
 
-    [HttpPut("meetings/{idMeeting:int}/status")]
-    public IActionResult CancelMeeting(int idMeeting)
+    [HttpPut("recruitments/{idStudent:int}")]
+    public async Task<IActionResult> CancelAppointment(int idStudent)
     {
-        return Ok("4. Cancel a meeting");
+        await _recruitmentService.CancelAppointment(idStudent);
+        return NoContent();
     }
 
-    [HttpPut("{idRecruitment}/documents/{idDocumentType:int}/status")]
-    public IActionResult ConfirmDocuments()
+    [HttpPut("recruitments/{idStudent:int}/documents/{idDocumentType:int")]
+    public IActionResult ConfirmDocuments(int idStudent, int idDocumentType)
     {
         return Ok("5. Confirm candidates documents");
     }
