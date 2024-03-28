@@ -8,11 +8,13 @@ namespace Gakko.API.Services;
 
 public class RecruitmentsService : IRecruitmentsService
 {
+    private readonly IAppointmentManagerService _appointmentManagerService;
     private readonly GakkoContext _dbContext;
 
-    public RecruitmentsService(GakkoContext dbContext)
+    public RecruitmentsService(GakkoContext dbContext, IAppointmentManagerService appointmentManagerService)
     {
         _dbContext = dbContext;
+        _appointmentManagerService = appointmentManagerService;
     }
 
     public async Task<Student> CreateRecruitment(CreateRecruitmentDto createRecruitmentDto)
@@ -46,7 +48,6 @@ public class RecruitmentsService : IRecruitmentsService
         if (age < 18)
             throw new ArgumentException("Candidate must be at least 18 years old");
 
-        //Validate pesel number
         if (createRecruitmentDto.Pesel.Length != 11)
             throw new ArgumentException("PESEL number must be 11 characters long");
 
@@ -73,6 +74,16 @@ public class RecruitmentsService : IRecruitmentsService
             StatusNavigation = status!
         };
 
+        //After registering we immediately setup the appointment
+        var appointmentDate = await _appointmentManagerService.ScheduleAppointmentForCandidate(candidate.IdCandidate);
+
+        var newAppointment = new Appointment
+        {
+            IdCandidate = candidate.IdCandidate,
+            Date = appointmentDate
+        };
+        candidate.Appointments.Add(newAppointment);
+
         await _dbContext.Students.AddAsync(candidate);
         await _dbContext.SaveChangesAsync();
 
@@ -93,6 +104,45 @@ public class RecruitmentsService : IRecruitmentsService
         var appointment = await _dbContext.Appointments.OrderByDescending(app => app.Date)
             .FirstOrDefaultAsync(app => app.IdCandidate == idStudent);
 
+        return appointment;
+    }
+
+    public async Task<Appointment> CreateAppointment(int idStudent)
+    {
+        var candidate = await _dbContext.Students.Include(c => c.StatusNavigation)
+            .FirstOrDefaultAsync(c => c.IdCandidate == idStudent);
+
+        if (candidate is null)
+            throw new ArgumentException("Candidate not found");
+
+        //Only candidate in certain statuses can schedule a meeting
+        if (candidate.StatusNavigation.Name != "Candidate - registered" &&
+            candidate.StatusNavigation.Name != "Candidate - waiting for documents" &&
+            candidate.StatusNavigation.Name != "Candidate - waiting for signing contract")
+            throw new ArgumentException("Candidate cannot schedule a meeting");
+
+        //Cancelling previous appointments
+        var previousAppointments = await _dbContext.Appointments.Include(app => app.AppointmentStatus)
+            .Where(app => app.IdCandidate == idStudent).ToListAsync();
+
+        foreach (var prevApp in previousAppointments)
+            if (prevApp.AppointmentStatus.Name == "Scheduled")
+                prevApp.AppointmentStatus =
+                    await _dbContext.AppointmentStatuses.SingleAsync(s => s.Name == "Cancelled");
+
+        await _appointmentManagerService.CancelAppointmentsForCandidate(idStudent);
+
+        //Creating new appointment
+        var date = await _appointmentManagerService.ScheduleAppointmentForCandidate(idStudent);
+
+        var appointment = new Appointment
+        {
+            IdCandidate = idStudent,
+            Date = date
+        };
+
+        await _dbContext.Appointments.AddAsync(appointment);
+        await _dbContext.SaveChangesAsync();
         return appointment;
     }
 }

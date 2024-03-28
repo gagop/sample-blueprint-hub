@@ -39,10 +39,16 @@ public class RecruitmentsController : ControllerBase
         return Ok(result);
     }
 
-    [HttpPost("recruitments/{idStudent:int}/currentAppointment")]
-    public IActionResult CreateMeeting()
+
+    /// <summary>
+    ///     Create new appointment for a candidate and cancel any previous appointments
+    /// </summary>
+    /// <returns></returns>
+    [HttpPost("recruitments/{idStudent:int}/appointments")]
+    public async Task<IActionResult> CreateMeeting(int idStudent)
     {
-        return Ok("3. Schedule a new meeting");
+        var meeting = await _recruitmentService.CreateAppointment(idStudent);
+        return StatusCode(StatusCodes.Status201Created, meeting);
     }
 
     [HttpPut("meetings/{idMeeting:int}/status")]

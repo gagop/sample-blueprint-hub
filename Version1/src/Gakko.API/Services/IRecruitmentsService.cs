@@ -7,4 +7,5 @@ public interface IRecruitmentsService
 {
     Task<Student> CreateRecruitment(CreateRecruitmentDto createRecruitmentDto);
     Task<Appointment> GetCurrentAppointment(int idStudent);
+    Task<Appointment> CreateAppointment(int idStudent);
 }
