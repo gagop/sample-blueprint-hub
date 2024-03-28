@@ -3,6 +3,7 @@ using System;
 using Gakko.API.Context;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 
@@ -11,9 +12,11 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace Gakko.API.Migrations
 {
     [DbContext(typeof(GakkoContext))]
-    partial class GakkoContextModelSnapshot : ModelSnapshot
+    [Migration("20240328150919_AddedIndexNumberToStudentEntity")]
+    partial class AddedIndexNumberToStudentEntity
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -332,10 +335,8 @@ namespace Gakko.API.Migrations
                         .HasColumnType("integer")
                         .HasColumnName("idstudyprogramme");
 
-                    b.Property<int?>("IndexNumber")
-                        .HasMaxLength(50)
-                        .HasColumnType("integer")
-                        .HasColumnName("indexnumber");
+                    b.Property<string>("IndexNumber")
+                        .HasColumnType("text");
 
                     b.Property<string>("LastName")
                         .IsRequired()

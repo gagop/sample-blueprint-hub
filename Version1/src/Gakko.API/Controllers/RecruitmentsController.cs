@@ -16,7 +16,7 @@ public class RecruitmentsController : ControllerBase
     }
 
     /// <summary>
-    ///     Endpoint used to start a new recruitment process for a candidate
+    ///     Endpoint used to start a new recruitment process for a candidate.
     /// </summary>
     /// <param name="newCandidate">Candidate's personal details required to begin the recruitment process</param>
     /// <returns></returns>
@@ -28,7 +28,7 @@ public class RecruitmentsController : ControllerBase
     }
 
     /// <summary>
-    ///     Endpoint used to check the current meeting time for a candidate
+    ///     Endpoint used to check the current appointment time for a candidate.
     /// </summary>
     /// <param name="idStudent">Candidate's id</param>
     /// <returns></returns>
@@ -41,7 +41,7 @@ public class RecruitmentsController : ControllerBase
 
 
     /// <summary>
-    ///     Create new appointment for a candidate and cancel any previous appointments
+    ///     Create new appointment for a candidate and cancel any previous appointments.
     /// </summary>
     /// <returns></returns>
     [HttpPost("recruitments/{idStudent:int}/appointments")]
@@ -51,6 +51,11 @@ public class RecruitmentsController : ControllerBase
         return StatusCode(StatusCodes.Status201Created, meeting);
     }
 
+    /// <summary>
+    ///     Cancel the currently scheduled appointment for a candidate.
+    /// </summary>
+    /// <param name="idStudent">Id of the candidate</param>
+    /// <returns>204 - No content</returns>
     [HttpPut("recruitments/{idStudent:int}")]
     public async Task<IActionResult> CancelAppointment(int idStudent)
     {
@@ -58,21 +63,44 @@ public class RecruitmentsController : ControllerBase
         return NoContent();
     }
 
+    /// <summary>
+    ///     Confirm the candidate's documents for the recruitment process.
+    ///     When all the documents required by specific study programme are submitted, the candidate is moved to the next stage
+    ///     of the recruitment process.
+    /// </summary>
+    /// <param name="idStudent">Id of the candidate</param>
+    /// <param name="idDocumentType">Id of the document type</param>
+    /// <returns>204 - No content</returns>
     [HttpPut("recruitments/{idStudent:int}/documents/{idDocumentType:int")]
-    public IActionResult ConfirmDocuments(int idStudent, int idDocumentType)
+    public async Task<IActionResult> ConfirmDocuments(int idStudent, int idDocumentType)
     {
-        return Ok("5. Confirm candidates documents");
+        await _recruitmentService.ConfirmDocument(idStudent, idDocumentType);
+        return NoContent();
     }
 
-    [HttpPut("{idRecruitment:int}/status")]
-    public IActionResult ConfirmAdmissionFeePayment()
+    /// <summary>
+    ///     Confirm that the admission fee has been paid by the candidate.
+    ///     Then student is moved to the student status and we assign index number to him.
+    /// </summary>
+    /// <param name="idStudent">Id of the candidate</param>
+    /// <returns>204 - No content</returns>
+    [HttpPut("recruitments/{idStudent:int}/admission-fee")]
+    public async Task<IActionResult> ConfirmAdmissionFeePayment(int idStudent)
     {
-        return Ok("6. Confirm payment admission fee");
+        await _recruitmentService.ConfirmAdmissionFeePayment(idStudent);
+        return NoContent();
     }
 
-    [HttpPut("/cancel-unfinished-recruitments")]
-    public IActionResult CancelUnfinishedRegistrations()
+    /// <summary>
+    ///     Cancels all the ongoing recruitment processes which are not finished.
+    ///     All the candidates are moved to "Candidate - cancelled" status.
+    ///     All the scheduled appointments are cancelled.
+    /// </summary>
+    /// <returns>204 - No content</returns>
+    [HttpPut("recruitments/unfinished")]
+    public async Task<IActionResult> CancelUnfinishedRegistrations()
     {
-        return Ok("7. Cancel unfinished recruitments");
+        await _recruitmentService.CancelOngoingRecruitments();
+        return NoContent();
     }
 }

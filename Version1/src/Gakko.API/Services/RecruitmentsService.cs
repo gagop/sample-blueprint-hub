@@ -10,11 +10,14 @@ public class RecruitmentsService : IRecruitmentsService
 {
     private readonly IAppointmentManagerService _appointmentManagerService;
     private readonly GakkoContext _dbContext;
+    private readonly IEmailService _emailService;
 
-    public RecruitmentsService(GakkoContext dbContext, IAppointmentManagerService appointmentManagerService)
+    public RecruitmentsService(GakkoContext dbContext, IAppointmentManagerService appointmentManagerService,
+        IEmailService emailService)
     {
         _dbContext = dbContext;
         _appointmentManagerService = appointmentManagerService;
+        _emailService = emailService;
     }
 
     public async Task<Student> CreateRecruitment(CreateRecruitmentDto createRecruitmentDto)
@@ -69,9 +72,9 @@ public class RecruitmentsService : IRecruitmentsService
             PhoneNumber = createRecruitmentDto.Phone.Trim(),
             Gender = createRecruitmentDto.Gender == "M" ? 0 : 1,
             DateOfBirth = DateOnly.Parse(createRecruitmentDto.Birthdate),
-            NationalityNavigation = nationality,
-            StudyProgrammeNavigation = studyProgramme,
-            StatusNavigation = status!
+            Nationality = nationality,
+            StudyProgramme = studyProgramme,
+            Status = status!
         };
 
         //After registering we immediately setup the appointment
@@ -92,13 +95,13 @@ public class RecruitmentsService : IRecruitmentsService
 
     public async Task<Appointment> GetCurrentAppointment(int idStudent)
     {
-        var candidate = await _dbContext.Students.Include(c => c.StatusNavigation)
+        var candidate = await _dbContext.Students.Include(c => c.Status)
             .FirstOrDefaultAsync(c => c.IdCandidate == idStudent);
 
         if (candidate is null)
             throw new ArgumentException("Candidate not found");
 
-        if (candidate.StatusNavigation.Name != "Candidate - registered")
+        if (candidate.Status.Name != "Candidate - registered")
             throw new ArgumentException("Candidate is not registered");
 
         var appointment = await _dbContext.Appointments.OrderByDescending(app => app.Date)
@@ -109,16 +112,16 @@ public class RecruitmentsService : IRecruitmentsService
 
     public async Task<Appointment> CreateAppointment(int idStudent)
     {
-        var candidate = await _dbContext.Students.Include(c => c.StatusNavigation)
+        var candidate = await _dbContext.Students.Include(c => c.Status)
             .FirstOrDefaultAsync(c => c.IdCandidate == idStudent);
 
         if (candidate is null)
             throw new ArgumentException("Candidate not found");
 
         //Only candidate in certain statuses can schedule a meeting
-        if (candidate.StatusNavigation.Name != "Candidate - registered" &&
-            candidate.StatusNavigation.Name != "Candidate - waiting for documents" &&
-            candidate.StatusNavigation.Name != "Candidate - waiting for signing contract")
+        if (candidate.Status.Name != "Candidate - registered" &&
+            candidate.Status.Name != "Candidate - waiting for documents" &&
+            candidate.Status.Name != "Candidate - waiting for signing contract")
             throw new ArgumentException("Candidate cannot schedule a meeting");
 
         //Cancelling previous appointments
@@ -148,7 +151,7 @@ public class RecruitmentsService : IRecruitmentsService
 
     public async Task CancelAppointment(int idStudent)
     {
-        var candidate = await _dbContext.Students.Include(c => c.StatusNavigation)
+        var candidate = await _dbContext.Students.Include(c => c.Status)
             .FirstOrDefaultAsync(c => c.IdCandidate == idStudent);
 
         if (candidate is null)
@@ -165,10 +168,105 @@ public class RecruitmentsService : IRecruitmentsService
 
     public async Task ConfirmDocument(int idStudent, int idDocument)
     {
-        var candidate = await _dbContext.Students.Include(c => c.StatusNavigation)
+        var candidate = await _dbContext.Students
+            .Include(c => c.Status)
+            .Include(s => s.StudyProgramme)
             .FirstOrDefaultAsync(c => c.IdCandidate == idStudent);
 
         if (candidate is null)
             throw new ArgumentException("Candidate not found");
+
+        var candidatesDocument =
+            await _dbContext.CandidatesDocument.FirstOrDefaultAsync(cd =>
+                cd.IdDocumentType == idDocument && cd.IdCandidate == idStudent);
+
+        if (candidatesDocument is null)
+            throw new ArgumentException("Document not found");
+
+        if (candidatesDocument.ConfirmedAt is not null)
+            throw new ArgumentException("Document already confirmed");
+
+        candidatesDocument.ConfirmedAt = DateOnly.FromDateTime(DateTime.Now);
+
+        //Checking whether the candidates has all the required documents and
+        //can be moved to the next status - waiting for signing the contract
+        var requiredDocuments = await _dbContext.StudyProgrammes
+            .Include(sp => sp.DocumentTypes)
+            .Where(sp => sp.IdStudyProgramme == candidate.StudyProgramme.IdStudyProgramme)
+            .SelectMany(sp => sp.DocumentTypes).ToListAsync();
+
+        var confirmedDocuments = await _dbContext.CandidatesDocument
+            .Include(cd => cd.DocumentType)
+            .Where(cd => cd.IdCandidate == idStudent && cd.ConfirmedAt != null).Select(cd => cd.DocumentType)
+            .ToListAsync();
+
+        //Check if two lists are the same
+        if (requiredDocuments.Count == confirmedDocuments.Count &&
+            requiredDocuments.All(rd => confirmedDocuments.Any(cd => cd.IdDocumentType == rd.IdDocumentType)))
+        {
+            var status =
+                await _dbContext.Statuses.SingleAsync(s =>
+                    s.Name == "Candidate - waiting for signing contract");
+            candidate.Status = status;
+        }
+
+        await _dbContext.SaveChangesAsync();
+    }
+
+    public async Task ConfirmAdmissionFeePayment(int idStudent)
+    {
+        var candidate = await _dbContext.Students.Include(c => c.Status)
+            .FirstOrDefaultAsync(c => c.IdCandidate == idStudent);
+
+        if (candidate is null)
+            throw new ArgumentException("Candidate not found");
+
+        if (candidate.Status.Name != "Candidate - waiting for payment")
+            throw new ArgumentException("Candidate is not in the correct state");
+
+        //Moving the candidate to student status
+        var status = await _dbContext.Statuses.SingleAsync(s => s.Name == "Student");
+        candidate.Status = status;
+
+        //Generating new index number
+        var indexNumber = await _dbContext.Students.MaxAsync(s => s.IndexNumber);
+        candidate.IndexNumber = indexNumber + 1;
+
+        await _dbContext.SaveChangesAsync();
+        await _emailService.SendEmail(candidate.EmailAddress, "You have been enrolled as a student",
+            "Congratulations! You have been enrolled as a student at our university. Welcome!");
+    }
+
+    public async Task CancelOngoingRecruitments()
+    {
+        var candidates = await _dbContext.Students
+            .Include(c => c.Appointments)
+            .ThenInclude(a => a.AppointmentStatus)
+            .Where(s => s.Status.Name == "Candidate - registered" ||
+                        s.Status.Name == "Candidate - waiting for documents" ||
+                        s.Status.Name == "Candidate - waiting for signing contract" ||
+                        s.Status.Name == "Candidate - waiting for payment")
+            .ToListAsync();
+
+        var cancelledStatus = await _dbContext.Statuses.SingleAsync(s => s.Name == "Candidate - cancelled");
+        var cancelledStatusAppointment =
+            await _dbContext.AppointmentStatuses.SingleAsync(s => s.Name == "Cancelled");
+
+        foreach (var candidate in candidates)
+        {
+            candidate.Status = cancelledStatus;
+
+            //Cancelling scheduled appointments
+            var scheduledAppointments = candidate.Appointments
+                .Where(app => app.AppointmentStatus.Name == "Scheduled").ToList();
+
+
+            foreach (var appointment in scheduledAppointments)
+                appointment.AppointmentStatus = cancelledStatusAppointment;
+
+            await _appointmentManagerService.CancelAppointmentsForCandidate(candidate.IdCandidate);
+        }
+
+        await _dbContext.SaveChangesAsync();
     }
 }

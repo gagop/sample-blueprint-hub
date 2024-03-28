@@ -10,4 +10,6 @@ public interface IRecruitmentsService
     Task<Appointment> CreateAppointment(int idStudent);
     Task CancelAppointment(int idStudent);
     Task ConfirmDocument(int idStudent, int idDocument);
+    Task ConfirmAdmissionFeePayment(int idStudent);
+    Task CancelOngoingRecruitments();
 }

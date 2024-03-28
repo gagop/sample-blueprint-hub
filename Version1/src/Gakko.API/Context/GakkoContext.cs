@@ -20,6 +20,7 @@ public partial class GakkoContext : DbContext
 
     public virtual DbSet<DocumentType> DocumentTypes { get; set; }
 
+    public virtual DbSet<CandidatesDocument> CandidatesDocument { get; set; }
     public virtual DbSet<Nationality> Nationalities { get; set; }
 
     public virtual DbSet<Status> Statuses { get; set; }
@@ -136,6 +137,7 @@ public partial class GakkoContext : DbContext
             entity.Property(e => e.HomeAddress)
                 .HasMaxLength(255)
                 .HasColumnName("homeaddress");
+            entity.Property(e => e.IndexNumber).HasColumnName("indexnumber").HasMaxLength(50);
             entity.Property(e => e.IdNationality).HasColumnName("idnationality");
             entity.Property(e => e.IdStatus).HasColumnName("idstatus");
             entity.Property(e => e.IdStudyProgramme).HasColumnName("idstudyprogramme");
@@ -152,17 +154,17 @@ public partial class GakkoContext : DbContext
                 .HasMaxLength(200)
                 .HasColumnName("phonenumber");
 
-            entity.HasOne(d => d.NationalityNavigation).WithMany(p => p.Students)
+            entity.HasOne(d => d.Nationality).WithMany(p => p.Students)
                 .HasForeignKey(d => d.IdNationality)
                 .OnDelete(DeleteBehavior.ClientSetNull)
                 .HasConstraintName("candidate_nationality");
 
-            entity.HasOne(d => d.StatusNavigation).WithMany(p => p.Students)
+            entity.HasOne(d => d.Status).WithMany(p => p.Students)
                 .HasForeignKey(d => d.IdStatus)
                 .OnDelete(DeleteBehavior.ClientSetNull)
                 .HasConstraintName("student_status");
 
-            entity.HasOne(d => d.StudyProgrammeNavigation).WithMany(p => p.Students)
+            entity.HasOne(d => d.StudyProgramme).WithMany(p => p.Students)
                 .HasForeignKey(d => d.IdStudyProgramme)
                 .OnDelete(DeleteBehavior.ClientSetNull)
                 .HasConstraintName("candidate_studyprogrammer");
@@ -223,7 +225,7 @@ public partial class GakkoContext : DbContext
                 .OnDelete(DeleteBehavior.ClientSetNull)
                 .HasConstraintName("studyprogrammer_studymode");
 
-            entity.HasMany(d => d.IdDocumentTypes).WithMany(p => p.StudyProgrammes)
+            entity.HasMany(d => d.DocumentTypes).WithMany(p => p.StudyProgrammes)
                 .UsingEntity<Dictionary<string, object>>(
                     "Requiredenrollmentdocument",
                     r => r.HasOne<DocumentType>().WithMany()

@@ -14,6 +14,7 @@ public class Student
 
     public string HomeAddress { get; set; } = null!;
 
+    public int? IndexNumber { get; set; } = null;
     public int Gender { get; set; }
 
     public string? PeselNumber { get; set; }
@@ -30,11 +31,11 @@ public class Student
 
     public virtual ICollection<Appointment> Appointments { get; set; } = new List<Appointment>();
 
-    public virtual Nationality NationalityNavigation { get; set; } = null!;
+    public virtual Nationality Nationality { get; set; } = null!;
 
-    public virtual Status StatusNavigation { get; set; } = null!;
+    public virtual Status Status { get; set; } = null!;
 
-    public virtual StudyProgramme StudyProgrammeNavigation { get; set; } = null!;
+    public virtual StudyProgramme StudyProgramme { get; set; } = null!;
 
     public virtual ICollection<CandidatesDocument> CandidatesDocuments { get; set; } = new List<CandidatesDocument>();
 }

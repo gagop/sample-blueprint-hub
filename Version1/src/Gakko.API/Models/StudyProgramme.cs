@@ -20,5 +20,5 @@ public class StudyProgramme
 
     public virtual ICollection<Student> Students { get; set; } = new List<Student>();
 
-    public virtual ICollection<DocumentType> IdDocumentTypes { get; set; } = new List<DocumentType>();
+    public virtual ICollection<DocumentType> DocumentTypes { get; set; } = new List<DocumentType>();
 }

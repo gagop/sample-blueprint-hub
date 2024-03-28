@@ -28,6 +28,7 @@ builder.Services.AddControllers()
 builder.Services.AddDbContext<GakkoContext>(opt => opt.UseNpgsql(builder.Configuration.GetConnectionString("GakkoDb")));
 builder.Services.AddScoped<IRecruitmentsService, RecruitmentsService>();
 builder.Services.AddScoped<IAppointmentManagerService, AppointmentManagerService>();
+builder.Services.AddScoped<IEmailService, EmailService>();
 
 var app = builder.Build();
 
