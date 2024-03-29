@@ -187,20 +187,54 @@ Our analyst created a use case diagram of all the use cases
 First use case is related to online application used by the candidate to register and start the addmission process.
 
 **ID**: 1
-
-**Name**: Registering a New Candidate
-
+**Name**: Registering a new candidate
 **Actor**: Candidate
-
 **Pre-conditions**: Registrations for candidates are still open.
-
-**Post-conditions**: The database has saved the candidate's personal details, and we start the admissions process.
-
+**Post-conditions**: The database has saved the candidate's personal details, and we start the admissions process. The meeting should be automatically created.
 
 **Main Flow:**
 1. The system asks the user to provide necessary details.
-2. The user provides their first name, last name, phone number, email address, home address, PESEL (Personal Identification Number), nationality, date of birth, and clicks the "Next" button.
+2. The actor provides their first name, last name, phone number, email address, home address, PESEL (Personal Identification Number), nationality, date of birth, and clicks the "Next" button.
 3. The system displays the screen where the user can choose their selected study program.
-4. The user selects the study program and clicks "Send."
+4. The actor selects the study program and clicks "Send."
 5. The system saves the information about the chosen study program.
-6. The system displays a message confirming that the data is saved.
+6. The system displays a message confirming that the data is saved and displaying the date of meeting at the university in the recruitment office.
+
+**ID**: 2
+**Name**: Get current appointment
+**Actor**: Candidate
+**Pre-conditions**: Candidate has logged-in and registered. Recruitment is still on going.
+**Post-conditions**: None
+
+**Main Flow:**
+1. The system presents a window displaying the details of the current appointment, including time, date, and location.
+2. The actor can review the appointment details to become acquainted with the information and the meeting location. 
+
+**ID**: 3 
+**Name**: Schedule an appointment
+**Actor**: Recruitment office employee
+**Pre-conditions**: The candidate has been registered in the system. The Recruitment Office Employee has successfully logged into the system. The recruitment process is currently ongoing.
+**Post-conditions**: Any previously scheduled appointments for the candidate have been canceled. A new appointment has been scheduled and saved in the database.
+
+**Main Flow:**
+1. The system presents a list of appointments, including their statuses, for a specific candidate.
+2. The actor clicks the "Create New Appointment" button.
+3. The system notifies the employee that proceeding will cancel any previously scheduled appointments for the candidate.
+4. Upon the actor clicking "OK", the system proceeds to create a new appointment. This involves communicating with an external service responsible for determining the availability and setting the date for the appointment. The new appointment details are then saved in the database.
+5. The system displays confirmation of the new appointment, including its details. Simultaneously, an email containing information about the new appointment is sent to the candidate.
+
+
+**ID**: 4
+**Name**: Cancel an appointment
+**Actor**: Recruitment office employee
+**Pre-conditions**: The candidate has been registered in the system. The Recruitment Office Employee has successfully logged into the system. The recruitment process is currently ongoing.
+**Post-conditions**: Any previously scheduled appointments for the candidate have been canceled and information has been send to the candidate.
+
+**Main Flow:**
+1. The system displays a list of scheduled appointments and their statuses for a specific candidate. 
+2. The actor clicks the "Cancel" button next to the appointment they wish to cancel.
+3. The system displays a confirmation dialog to ensure the actor intends to cancel the selected appointment.
+4. The actor confirms the cancellation action.
+5. The system cancels the meeting and saves the cancellation information in the database. Additionally, the system sends an email to the candidate to inform them of the cancellation. 
+
+

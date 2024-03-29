@@ -144,6 +144,10 @@ public class RecruitmentsService : IRecruitmentsService
             Date = date
         };
 
+        //Sending the information about the new appointment to the candidate
+        await _emailService.SendEmail(candidate.EmailAddress, "New appointment scheduled",
+            $"You have a new appointment scheduled for {date}");
+
         await _dbContext.Appointments.AddAsync(appointment);
         await _dbContext.SaveChangesAsync();
         return appointment;
@@ -162,6 +166,11 @@ public class RecruitmentsService : IRecruitmentsService
         foreach (var appointment in appointmentsToCancel)
             appointment.AppointmentStatus =
                 await _dbContext.AppointmentStatuses.SingleAsync(s => s.Name == "Cancelled");
+
+        //Sends the information about the cancelled appointment to the candidate
+        await _emailService.SendEmail(candidate.EmailAddress, "Appointment cancelled",
+            "Your appointment has been cancelled");
+
         await _dbContext.SaveChangesAsync();
         await _appointmentManagerService.CancelAppointmentsForCandidate(idStudent);
     }
@@ -259,7 +268,6 @@ public class RecruitmentsService : IRecruitmentsService
             //Cancelling scheduled appointments
             var scheduledAppointments = candidate.Appointments
                 .Where(app => app.AppointmentStatus.Name == "Scheduled").ToList();
-
 
             foreach (var appointment in scheduledAppointments)
                 appointment.AppointmentStatus = cancelledStatusAppointment;
