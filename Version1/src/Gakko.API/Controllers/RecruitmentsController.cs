@@ -45,7 +45,7 @@ public class RecruitmentsController : ControllerBase
     /// </summary>
     /// <returns></returns>
     [HttpPost("recruitments/{idStudent:int}/appointments")]
-    public async Task<IActionResult> CreateMeeting(int idStudent)
+    public async Task<IActionResult> CreateAppointment(int idStudent)
     {
         var meeting = await _recruitmentService.CreateAppointment(idStudent);
         return StatusCode(StatusCodes.Status201Created, meeting);
