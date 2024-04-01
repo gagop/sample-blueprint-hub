@@ -235,6 +235,4 @@ First use case is related to online application used by the candidate to registe
 2. The actor clicks the "Cancel" button next to the appointment they wish to cancel.
 3. The system displays a confirmation dialog to ensure the actor intends to cancel the selected appointment.
 4. The actor confirms the cancellation action.
-5. The system cancels the meeting and saves the cancellation information in the database. Additionally, the system sends an email to the candidate to inform them of the cancellation. 
-
-
+5. The system cancels the meeting and saves the cancellation information in the database. Additionally, the system sends an email to the candidate to inform them of the cancellation.
