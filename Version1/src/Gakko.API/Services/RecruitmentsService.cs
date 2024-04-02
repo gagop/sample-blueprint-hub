@@ -118,7 +118,7 @@ public class RecruitmentsService : IRecruitmentsService
         if (candidate is null)
             throw new ArgumentException("Candidate not found");
 
-        //Only candidate in certain statuses can schedule a meeting
+        //Only candidate in certain statuses can schedule appointments
         if (candidate.Status.Name != "Candidate - registered" &&
             candidate.Status.Name != "Candidate - waiting for documents" &&
             candidate.Status.Name != "Candidate - waiting for signing contract")
