@@ -23,7 +23,7 @@ public class RecruitmentsController : ControllerBase
     [HttpPost]
     public async Task<IActionResult> CreateRecruitment(CreateRecruitmentDto newCandidate)
     {
-        var candidate = await _recruitmentService.CreateRecruitment(newCandidate);
+        var candidate = await _recruitmentService.CreateRecruitmentAsync(newCandidate);
         return StatusCode(StatusCodes.Status201Created, candidate);
     }
 
@@ -35,7 +35,7 @@ public class RecruitmentsController : ControllerBase
     [HttpGet("recruitments/{idStudent:int}/currentAppointment")]
     public async Task<IActionResult> GetCurrentAppointmentInfo(int idStudent)
     {
-        var result = await _recruitmentService.GetCurrentAppointment(idStudent);
+        var result = await _recruitmentService.GetCurrentAppointmentAsync(idStudent);
         return Ok(result);
     }
 
@@ -47,7 +47,7 @@ public class RecruitmentsController : ControllerBase
     [HttpPost("recruitments/{idStudent:int}/appointments")]
     public async Task<IActionResult> CreateAppointment(int idStudent)
     {
-        var appointment = await _recruitmentService.CreateAppointment(idStudent);
+        var appointment = await _recruitmentService.CreateAppointmentAsync(idStudent);
         return StatusCode(StatusCodes.Status201Created, appointment);
     }
 
@@ -59,7 +59,7 @@ public class RecruitmentsController : ControllerBase
     [HttpPut("recruitments/{idStudent:int}")]
     public async Task<IActionResult> CancelAppointment(int idStudent)
     {
-        await _recruitmentService.CancelAppointment(idStudent);
+        await _recruitmentService.CancelAppointmentAsync(idStudent);
         return NoContent();
     }
 
@@ -71,10 +71,10 @@ public class RecruitmentsController : ControllerBase
     /// <param name="idStudent">Id of the candidate</param>
     /// <param name="idDocumentType">Id of the document type</param>
     /// <returns>204 - No content</returns>
-    [HttpPut("recruitments/{idStudent:int}/documents/{idDocumentType:int")]
+    [HttpPut("recruitments/{idStudent:int}/documents/{idDocumentType:int}")]
     public async Task<IActionResult> ConfirmDocuments(int idStudent, int idDocumentType)
     {
-        await _recruitmentService.ConfirmDocument(idStudent, idDocumentType);
+        await _recruitmentService.ConfirmDocumentAsync(idStudent, idDocumentType);
         return NoContent();
     }
 
@@ -87,7 +87,7 @@ public class RecruitmentsController : ControllerBase
     [HttpPut("recruitments/{idStudent:int}/admission-fee")]
     public async Task<IActionResult> ConfirmAdmissionFeePayment(int idStudent)
     {
-        await _recruitmentService.ConfirmAdmissionFeePayment(idStudent);
+        await _recruitmentService.ConfirmAdmissionFeePaymentAsync(idStudent);
         return NoContent();
     }
 
@@ -100,7 +100,7 @@ public class RecruitmentsController : ControllerBase
     [HttpPut("recruitments/unfinished")]
     public async Task<IActionResult> CancelUnfinishedRegistrations()
     {
-        await _recruitmentService.CancelOngoingRecruitments();
+        await _recruitmentService.CancelOngoingRecruitmentsAsync();
         return NoContent();
     }
 }

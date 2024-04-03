@@ -20,9 +20,9 @@ public class RecruitmentsService : IRecruitmentsService
         _emailService = emailService;
     }
 
-    public async Task<Student> CreateRecruitment(CreateRecruitmentDto createRecruitmentDto)
+    public async Task<Student> CreateRecruitmentAsync(CreateRecruitmentDto createRecruitmentDto)
     {
-        if (string.IsNullOrWhiteSpace(createRecruitmentDto.Pesel) ||
+        if (string.IsNullOrWhiteSpace(createRecruitmentDto.Pesel) &&
             string.IsNullOrWhiteSpace(createRecruitmentDto.Passport))
             throw new ArgumentException("PESEL or Passport number is required");
 
@@ -65,8 +65,8 @@ public class RecruitmentsService : IRecruitmentsService
         {
             FirstName = createRecruitmentDto.FirstName.Trim(),
             LastName = createRecruitmentDto.LastName.Trim(),
-            PeselNumber = createRecruitmentDto.Pesel.Trim(),
-            PassportNumber = createRecruitmentDto.Passport.Trim(),
+            PeselNumber = createRecruitmentDto.Pesel?.Trim(),
+            PassportNumber = createRecruitmentDto.Passport?.Trim(),
             EmailAddress = createRecruitmentDto.Email.Trim(),
             HomeAddress = createRecruitmentDto.Address.Trim(),
             PhoneNumber = createRecruitmentDto.Phone.Trim(),
@@ -93,7 +93,7 @@ public class RecruitmentsService : IRecruitmentsService
         return candidate;
     }
 
-    public async Task<Appointment> GetCurrentAppointment(int idStudent)
+    public async Task<Appointment> GetCurrentAppointmentAsync(int idStudent)
     {
         var candidate = await _dbContext.Students.Include(c => c.Status)
             .FirstOrDefaultAsync(c => c.IdCandidate == idStudent);
@@ -110,7 +110,7 @@ public class RecruitmentsService : IRecruitmentsService
         return appointment;
     }
 
-    public async Task<Appointment> CreateAppointment(int idStudent)
+    public async Task<Appointment> CreateAppointmentAsync(int idStudent)
     {
         var candidate = await _dbContext.Students.Include(c => c.Status)
             .FirstOrDefaultAsync(c => c.IdCandidate == idStudent);
@@ -141,7 +141,8 @@ public class RecruitmentsService : IRecruitmentsService
         var appointment = new Appointment
         {
             IdCandidate = idStudent,
-            Date = date
+            Date = date,
+            IdAppointmentStatus = 1
         };
 
         //Sending the information about the new appointment to the candidate
@@ -153,7 +154,7 @@ public class RecruitmentsService : IRecruitmentsService
         return appointment;
     }
 
-    public async Task CancelAppointment(int idStudent)
+    public async Task CancelAppointmentAsync(int idStudent)
     {
         var candidate = await _dbContext.Students.Include(c => c.Status)
             .FirstOrDefaultAsync(c => c.IdCandidate == idStudent);
@@ -175,7 +176,7 @@ public class RecruitmentsService : IRecruitmentsService
         await _appointmentManagerService.CancelAppointmentsForCandidate(idStudent);
     }
 
-    public async Task ConfirmDocument(int idStudent, int idDocument)
+    public async Task ConfirmDocumentAsync(int idStudent, int idDocument)
     {
         var candidate = await _dbContext.Students
             .Include(c => c.Status)
@@ -222,7 +223,7 @@ public class RecruitmentsService : IRecruitmentsService
         await _dbContext.SaveChangesAsync();
     }
 
-    public async Task ConfirmAdmissionFeePayment(int idStudent)
+    public async Task ConfirmAdmissionFeePaymentAsync(int idStudent)
     {
         var candidate = await _dbContext.Students.Include(c => c.Status)
             .FirstOrDefaultAsync(c => c.IdCandidate == idStudent);
@@ -246,7 +247,7 @@ public class RecruitmentsService : IRecruitmentsService
             "Congratulations! You have been enrolled as a student at our university. Welcome!");
     }
 
-    public async Task CancelOngoingRecruitments()
+    public async Task CancelOngoingRecruitmentsAsync()
     {
         var candidates = await _dbContext.Students
             .Include(c => c.Appointments)

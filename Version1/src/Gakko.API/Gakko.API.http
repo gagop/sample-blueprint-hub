@@ -1,6 +1,6 @@
 @Gakko.API_HostAddress = http://localhost:5223
 
-GET {{Gakko.API_HostAddress}}/weatherforecast/
+GET {{Gakko.API_HostAddress}}/recruitments/1/currentAppointment/
 Accept: application/json
 
 ###

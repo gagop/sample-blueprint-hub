@@ -5,11 +5,11 @@ namespace Gakko.API.Services;
 
 public interface IRecruitmentsService
 {
-    Task<Student> CreateRecruitment(CreateRecruitmentDto createRecruitmentDto);
-    Task<Appointment> GetCurrentAppointment(int idStudent);
-    Task<Appointment> CreateAppointment(int idStudent);
-    Task CancelAppointment(int idStudent);
-    Task ConfirmDocument(int idStudent, int idDocument);
-    Task ConfirmAdmissionFeePayment(int idStudent);
-    Task CancelOngoingRecruitments();
+    Task<Student> CreateRecruitmentAsync(CreateRecruitmentDto createRecruitmentDto);
+    Task<Appointment> GetCurrentAppointmentAsync(int idStudent);
+    Task<Appointment> CreateAppointmentAsync(int idStudent);
+    Task CancelAppointmentAsync(int idStudent);
+    Task ConfirmDocumentAsync(int idStudent, int idDocument);
+    Task ConfirmAdmissionFeePaymentAsync(int idStudent);
+    Task CancelOngoingRecruitmentsAsync();
 }

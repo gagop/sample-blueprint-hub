@@ -15,16 +15,12 @@ public partial class GakkoContext : DbContext
     }
 
     public virtual DbSet<Appointment> Appointments { get; set; }
-
     public virtual DbSet<AppointmentStatus> AppointmentStatuses { get; set; }
 
     public virtual DbSet<DocumentType> DocumentTypes { get; set; }
-
     public virtual DbSet<CandidatesDocument> CandidatesDocument { get; set; }
     public virtual DbSet<Nationality> Nationalities { get; set; }
-
     public virtual DbSet<Status> Statuses { get; set; }
-
     public virtual DbSet<Student> Students { get; set; }
 
     public virtual DbSet<StudyLevel> StudyLevels { get; set; }
@@ -200,9 +196,9 @@ public partial class GakkoContext : DbContext
 
         modelBuilder.Entity<StudyProgramme>(entity =>
         {
-            entity.HasKey(e => e.IdStudyProgramme).HasName("studyprogrammer_pk");
+            entity.HasKey(e => e.IdStudyProgramme).HasName("studyprogramme_pk");
 
-            entity.ToTable("studyprogrammer");
+            entity.ToTable("studyprogramme");
 
             entity.Property(e => e.IdStudyProgramme)
                 .ValueGeneratedOnAdd()
