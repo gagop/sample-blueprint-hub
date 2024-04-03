@@ -6,6 +6,25 @@ None of the presented solutions is considered perfect.
 Each solution presents certain advantages and disadvantages. 
 Whether a given architecture is appropriate for a specific problem always depends on the context of the decisions being made. I hope that this repository will help to show a broader picture of different kinds of approaches.
 
+# Project elements
+Business Requirements Description in README.md: Each presented solution will have its own README.md file containing a description. These solutions serve as a means to explore various implementation strategies for the requirements, along with discussing their respective advantages and disadvantages. Additionally, certain "mistakes" are intentionally incorporated into the solutions to illustrate common issues that might be encountered in real-world projects.
+
+## Solution Version 1: Basic Implementation
+This version represents our initial approach, adhering closely to common development patterns. It's characterized by choices typically made when developers follow widely recognized best practices without extensive customization. Sometimes this type of architecture may be called 'accidental architecture'.
+
+## Solution Version 2: Light Domain-Driven Design (DDD), Clean architecture
+This version of the solution aims to clearly distinguish between the three main responsibilities within our application: UI (User Interface), Infrastructure, and Business Logic. It bears resemblance to many examples that can be found online. A notable point is that it does not adhere strictly to all Domain-Driven Design (DDD) patterns. This approach may result in what is known as an anemic domain model, which doesn’t inherently carry a negative connotation, provided that it's a deliberate choice by the developer. This architectural style appears to bridge the gap between DDD and more straightforward methodologies, thus offering future flexibility.
+
+## Solution Version 3: Light DDD + MediatR with Cross-Cutting Concerns
+Building upon the previous version, Version 3 integrates the MediatR library to handle requests and commands, promoting loose coupling and separation of concerns. It also addresses cross-cutting concerns such as logging, validation, and security, enhancing the architecture's robustness and flexibility.
+
+## Solution Version 4: Enhanced DDD - Core Logic Refinement
+In Version 4, we are gradually transitioning the business logic from the application layer to the core layer, enriching our previously anemic domain model in the process.
+
+## Solution Version 5: DDD + Vertical Slice Architecture
+In version 5 we are introducing a little different way to separate our application (especially the business layer) according
+to features (buesines logic) instead of according to technical concertns. 
+
 # Introduction to business requirements
 Our repository will implement a certain set of business requirements. In the presented examples, we want to show both simpler and more complex use cases. For this reason, our business domain must possess a certain level of complexity. On the other hand, we obviously do not want the complexity of the presented domain to hinder the understanding of the examples. 
 For this reason, we have chosen a domain that will probably be at least partially familiar to the reader - it will be the sphere of higher education institutions' functioning. Of course, for the purposes of our examples, we will simplify the real business processes a bit and focus only on a few of them. It will therefore be an excerpt of a somewhat simplified reality, which I hope will be enough to present both simpler and more complex implementation examples.
