@@ -333,7 +333,6 @@ namespace Gakko.API.Migrations
                         .HasColumnName("idstudyprogramme");
 
                     b.Property<int?>("IndexNumber")
-                        .HasMaxLength(50)
                         .HasColumnType("integer")
                         .HasColumnName("indexnumber");
 
@@ -474,13 +473,13 @@ namespace Gakko.API.Migrations
                         .HasColumnName("recruitmentstart");
 
                     b.HasKey("IdStudyProgramme")
-                        .HasName("studyprogrammer_pk");
+                        .HasName("studyprogramme_pk");
 
                     b.HasIndex("IdStudyLevel");
 
                     b.HasIndex("IdStudyMode");
 
-                    b.ToTable("studyprogrammer", (string)null);
+                    b.ToTable("studyprogramme", (string)null);
 
                     b.HasData(
                         new

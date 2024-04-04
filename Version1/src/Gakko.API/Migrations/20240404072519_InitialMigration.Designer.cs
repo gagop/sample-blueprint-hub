@@ -12,8 +12,8 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace Gakko.API.Migrations
 {
     [DbContext(typeof(GakkoContext))]
-    [Migration("20240324233829_AddNationalitySeeding")]
-    partial class AddNationalitySeeding
+    [Migration("20240404072519_InitialMigration")]
+    partial class InitialMigration
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -28,8 +28,11 @@ namespace Gakko.API.Migrations
             modelBuilder.Entity("Gakko.API.Models.Appointment", b =>
                 {
                     b.Property<int>("IdAppointment")
+                        .ValueGeneratedOnAdd()
                         .HasColumnType("integer")
                         .HasColumnName("idappointment");
+
+                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("IdAppointment"));
 
                     b.Property<DateOnly>("Date")
                         .HasColumnType("date")
@@ -53,11 +56,14 @@ namespace Gakko.API.Migrations
                     b.ToTable("appointment", (string)null);
                 });
 
-            modelBuilder.Entity("Gakko.API.Models.Appointmentstatus", b =>
+            modelBuilder.Entity("Gakko.API.Models.AppointmentStatus", b =>
                 {
                     b.Property<int>("IdAppointmentStatus")
+                        .ValueGeneratedOnAdd()
                         .HasColumnType("integer")
                         .HasColumnName("idappointmentstatus");
+
+                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("IdAppointmentStatus"));
 
                     b.Property<string>("Name")
                         .IsRequired()
@@ -69,13 +75,53 @@ namespace Gakko.API.Migrations
                         .HasName("appointmentstatus_pk");
 
                     b.ToTable("appointmentstatus", (string)null);
+
+                    b.HasData(
+                        new
+                        {
+                            IdAppointmentStatus = 1,
+                            Name = "Scheduled"
+                        },
+                        new
+                        {
+                            IdAppointmentStatus = 2,
+                            Name = "Cancelled"
+                        },
+                        new
+                        {
+                            IdAppointmentStatus = 3,
+                            Name = "Done"
+                        });
+                });
+
+            modelBuilder.Entity("Gakko.API.Models.CandidatesDocument", b =>
+                {
+                    b.Property<int>("IdCandidate")
+                        .HasColumnType("integer");
+
+                    b.Property<int>("IdDocumentType")
+                        .HasColumnType("integer");
+
+                    b.Property<DateOnly?>("ConfirmedAt")
+                        .HasColumnType("date")
+                        .HasColumnName("confirmedat");
+
+                    b.HasKey("IdCandidate", "IdDocumentType")
+                        .HasName("candidatesdocument_pk");
+
+                    b.HasIndex("IdDocumentType");
+
+                    b.ToTable("candidatesdocument", (string)null);
                 });
 
             modelBuilder.Entity("Gakko.API.Models.DocumentType", b =>
                 {
                     b.Property<int>("IdDocumentType")
+                        .ValueGeneratedOnAdd()
                         .HasColumnType("integer")
                         .HasColumnName("iddocumenttype");
+
+                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("IdDocumentType"));
 
                     b.Property<string>("Name")
                         .IsRequired()
@@ -87,13 +133,53 @@ namespace Gakko.API.Migrations
                         .HasName("documenttype_pk");
 
                     b.ToTable("documenttype", (string)null);
+
+                    b.HasData(
+                        new
+                        {
+                            IdDocumentType = 1,
+                            Name = "High school diploma"
+                        },
+                        new
+                        {
+                            IdDocumentType = 2,
+                            Name = "Bachelor's degree"
+                        },
+                        new
+                        {
+                            IdDocumentType = 3,
+                            Name = "Master's degree"
+                        },
+                        new
+                        {
+                            IdDocumentType = 4,
+                            Name = "Doctoral degree"
+                        },
+                        new
+                        {
+                            IdDocumentType = 5,
+                            Name = "English language certificate"
+                        },
+                        new
+                        {
+                            IdDocumentType = 6,
+                            Name = "Passport"
+                        },
+                        new
+                        {
+                            IdDocumentType = 7,
+                            Name = "Photo"
+                        });
                 });
 
             modelBuilder.Entity("Gakko.API.Models.Nationality", b =>
                 {
                     b.Property<int>("IdNationality")
+                        .ValueGeneratedOnAdd()
                         .HasColumnType("integer")
                         .HasColumnName("idnationality");
+
+                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("IdNationality"));
 
                     b.Property<string>("Name")
                         .IsRequired()
@@ -147,8 +233,11 @@ namespace Gakko.API.Migrations
             modelBuilder.Entity("Gakko.API.Models.Status", b =>
                 {
                     b.Property<int>("IdStatus")
+                        .ValueGeneratedOnAdd()
                         .HasColumnType("integer")
                         .HasColumnName("idstatus");
+
+                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("IdStatus"));
 
                     b.Property<string>("Name")
                         .IsRequired()
@@ -160,13 +249,53 @@ namespace Gakko.API.Migrations
                         .HasName("status_pk");
 
                     b.ToTable("status", (string)null);
+
+                    b.HasData(
+                        new
+                        {
+                            IdStatus = 1,
+                            Name = "Candidate - registered"
+                        },
+                        new
+                        {
+                            IdStatus = 2,
+                            Name = "Candidate - waiting for documents"
+                        },
+                        new
+                        {
+                            IdStatus = 3,
+                            Name = "Candidate - waiting for signing contract"
+                        },
+                        new
+                        {
+                            IdStatus = 4,
+                            Name = "Candidate - waiting for payment"
+                        },
+                        new
+                        {
+                            IdStatus = 5,
+                            Name = "Student"
+                        },
+                        new
+                        {
+                            IdStatus = 6,
+                            Name = "Graduate"
+                        },
+                        new
+                        {
+                            IdStatus = 7,
+                            Name = "Student on leave"
+                        });
                 });
 
             modelBuilder.Entity("Gakko.API.Models.Student", b =>
                 {
                     b.Property<int>("IdCandidate")
+                        .ValueGeneratedOnAdd()
                         .HasColumnType("integer")
                         .HasColumnName("idcandidate");
+
+                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("IdCandidate"));
 
                     b.Property<DateOnly>("DateOfBirth")
                         .HasColumnType("date")
@@ -206,6 +335,10 @@ namespace Gakko.API.Migrations
                         .HasColumnType("integer")
                         .HasColumnName("idstudyprogramme");
 
+                    b.Property<int?>("IndexNumber")
+                        .HasColumnType("integer")
+                        .HasColumnName("indexnumber");
+
                     b.Property<string>("LastName")
                         .IsRequired()
                         .HasMaxLength(200)
@@ -243,8 +376,11 @@ namespace Gakko.API.Migrations
             modelBuilder.Entity("Gakko.API.Models.StudyLevel", b =>
                 {
                     b.Property<int>("IdStudyLevel")
+                        .ValueGeneratedOnAdd()
                         .HasColumnType("integer")
                         .HasColumnName("idstudylevel");
+
+                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("IdStudyLevel"));
 
                     b.Property<string>("Name")
                         .IsRequired()
@@ -256,13 +392,33 @@ namespace Gakko.API.Migrations
                         .HasName("studylevel_pk");
 
                     b.ToTable("studylevel", (string)null);
+
+                    b.HasData(
+                        new
+                        {
+                            IdStudyLevel = 1,
+                            Name = "Bachelor"
+                        },
+                        new
+                        {
+                            IdStudyLevel = 2,
+                            Name = "Master"
+                        },
+                        new
+                        {
+                            IdStudyLevel = 3,
+                            Name = "Doctoral"
+                        });
                 });
 
             modelBuilder.Entity("Gakko.API.Models.StudyMode", b =>
                 {
                     b.Property<int>("IdStudyMode")
+                        .ValueGeneratedOnAdd()
                         .HasColumnType("integer")
                         .HasColumnName("idstudymode");
+
+                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("IdStudyMode"));
 
                     b.Property<string>("Name")
                         .IsRequired()
@@ -274,13 +430,28 @@ namespace Gakko.API.Migrations
                         .HasName("studymode_pk");
 
                     b.ToTable("studymode", (string)null);
+
+                    b.HasData(
+                        new
+                        {
+                            IdStudyMode = 1,
+                            Name = "Full-time"
+                        },
+                        new
+                        {
+                            IdStudyMode = 2,
+                            Name = "Part-time"
+                        });
                 });
 
             modelBuilder.Entity("Gakko.API.Models.StudyProgramme", b =>
                 {
                     b.Property<int>("IdStudyProgramme")
+                        .ValueGeneratedOnAdd()
                         .HasColumnType("integer")
                         .HasColumnName("idstudyprogramme");
+
+                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("IdStudyProgramme"));
 
                     b.Property<int>("IdStudyLevel")
                         .HasColumnType("integer")
@@ -305,13 +476,69 @@ namespace Gakko.API.Migrations
                         .HasColumnName("recruitmentstart");
 
                     b.HasKey("IdStudyProgramme")
-                        .HasName("studyprogrammer_pk");
+                        .HasName("studyprogramme_pk");
 
                     b.HasIndex("IdStudyLevel");
 
                     b.HasIndex("IdStudyMode");
 
-                    b.ToTable("studyprogrammer", (string)null);
+                    b.ToTable("studyprogramme", (string)null);
+
+                    b.HasData(
+                        new
+                        {
+                            IdStudyProgramme = 1,
+                            IdStudyLevel = 1,
+                            IdStudyMode = 1,
+                            Name = "Computer Science",
+                            RecruitmentEnd = new DateOnly(2022, 9, 30),
+                            RecruitmentStart = new DateOnly(2022, 1, 1)
+                        },
+                        new
+                        {
+                            IdStudyProgramme = 2,
+                            IdStudyLevel = 1,
+                            IdStudyMode = 1,
+                            Name = "Information Technology",
+                            RecruitmentEnd = new DateOnly(2022, 9, 30),
+                            RecruitmentStart = new DateOnly(2022, 1, 1)
+                        },
+                        new
+                        {
+                            IdStudyProgramme = 3,
+                            IdStudyLevel = 1,
+                            IdStudyMode = 1,
+                            Name = "Software Engineering",
+                            RecruitmentEnd = new DateOnly(2022, 9, 30),
+                            RecruitmentStart = new DateOnly(2022, 1, 1)
+                        },
+                        new
+                        {
+                            IdStudyProgramme = 4,
+                            IdStudyLevel = 2,
+                            IdStudyMode = 1,
+                            Name = "Computer Science",
+                            RecruitmentEnd = new DateOnly(2022, 9, 30),
+                            RecruitmentStart = new DateOnly(2022, 1, 1)
+                        },
+                        new
+                        {
+                            IdStudyProgramme = 5,
+                            IdStudyLevel = 2,
+                            IdStudyMode = 1,
+                            Name = "Information Technology",
+                            RecruitmentEnd = new DateOnly(2022, 9, 30),
+                            RecruitmentStart = new DateOnly(2022, 1, 1)
+                        },
+                        new
+                        {
+                            IdStudyProgramme = 6,
+                            IdStudyLevel = 2,
+                            IdStudyMode = 1,
+                            Name = "Software Engineering",
+                            RecruitmentEnd = new DateOnly(2022, 9, 30),
+                            RecruitmentStart = new DateOnly(2022, 1, 1)
+                        });
                 });
 
             modelBuilder.Entity("Requiredenrollmentdocument", b =>
@@ -334,7 +561,7 @@ namespace Gakko.API.Migrations
 
             modelBuilder.Entity("Gakko.API.Models.Appointment", b =>
                 {
-                    b.HasOne("Gakko.API.Models.Appointmentstatus", "AppointmentStatus")
+                    b.HasOne("Gakko.API.Models.AppointmentStatus", "AppointmentStatus")
                         .WithMany("Appointments")
                         .HasForeignKey("IdAppointmentStatus")
                         .IsRequired()
@@ -351,31 +578,50 @@ namespace Gakko.API.Migrations
                     b.Navigation("CandidateNavigation");
                 });
 
+            modelBuilder.Entity("Gakko.API.Models.CandidatesDocument", b =>
+                {
+                    b.HasOne("Gakko.API.Models.Student", "Candidate")
+                        .WithMany("CandidatesDocuments")
+                        .HasForeignKey("IdCandidate")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("Gakko.API.Models.DocumentType", "DocumentType")
+                        .WithMany("CandidatesDocuments")
+                        .HasForeignKey("IdDocumentType")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Candidate");
+
+                    b.Navigation("DocumentType");
+                });
+
             modelBuilder.Entity("Gakko.API.Models.Student", b =>
                 {
-                    b.HasOne("Gakko.API.Models.Nationality", "NationalityNavigation")
+                    b.HasOne("Gakko.API.Models.Nationality", "Nationality")
                         .WithMany("Students")
                         .HasForeignKey("IdNationality")
                         .IsRequired()
                         .HasConstraintName("candidate_nationality");
 
-                    b.HasOne("Gakko.API.Models.Status", "StatusNavigation")
+                    b.HasOne("Gakko.API.Models.Status", "Status")
                         .WithMany("Students")
                         .HasForeignKey("IdStatus")
                         .IsRequired()
                         .HasConstraintName("student_status");
 
-                    b.HasOne("Gakko.API.Models.StudyProgramme", "StudyProgrammeNavigation")
+                    b.HasOne("Gakko.API.Models.StudyProgramme", "StudyProgramme")
                         .WithMany("Students")
                         .HasForeignKey("IdStudyProgramme")
                         .IsRequired()
                         .HasConstraintName("candidate_studyprogrammer");
 
-                    b.Navigation("NationalityNavigation");
+                    b.Navigation("Nationality");
 
-                    b.Navigation("StatusNavigation");
+                    b.Navigation("Status");
 
-                    b.Navigation("StudyProgrammeNavigation");
+                    b.Navigation("StudyProgramme");
                 });
 
             modelBuilder.Entity("Gakko.API.Models.StudyProgramme", b =>
@@ -412,9 +658,14 @@ namespace Gakko.API.Migrations
                         .HasConstraintName("requiredenrollmentdocument_studyprogrammer");
                 });
 
-            modelBuilder.Entity("Gakko.API.Models.Appointmentstatus", b =>
+            modelBuilder.Entity("Gakko.API.Models.AppointmentStatus", b =>
                 {
                     b.Navigation("Appointments");
+                });
+
+            modelBuilder.Entity("Gakko.API.Models.DocumentType", b =>
+                {
+                    b.Navigation("CandidatesDocuments");
                 });
 
             modelBuilder.Entity("Gakko.API.Models.Nationality", b =>
@@ -430,6 +681,8 @@ namespace Gakko.API.Migrations
             modelBuilder.Entity("Gakko.API.Models.Student", b =>
                 {
                     b.Navigation("Appointments");
+
+                    b.Navigation("CandidatesDocuments");
                 });
 
             modelBuilder.Entity("Gakko.API.Models.StudyLevel", b =>

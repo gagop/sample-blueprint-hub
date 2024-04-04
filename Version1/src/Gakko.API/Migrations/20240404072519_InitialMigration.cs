@@ -1,5 +1,6 @@
 ﻿using System;
 using Microsoft.EntityFrameworkCore.Migrations;
+using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 
 #nullable disable
 
@@ -8,7 +9,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 namespace Gakko.API.Migrations
 {
     /// <inheritdoc />
-    public partial class AddNationalitySeeding : Migration
+    public partial class InitialMigration : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
@@ -17,7 +18,8 @@ namespace Gakko.API.Migrations
                 name: "appointmentstatus",
                 columns: table => new
                 {
-                    idappointmentstatus = table.Column<int>(type: "integer", nullable: false),
+                    idappointmentstatus = table.Column<int>(type: "integer", nullable: false)
+                        .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn),
                     name = table.Column<string>(type: "character varying(100)", maxLength: 100, nullable: false)
                 },
                 constraints: table =>
@@ -29,7 +31,8 @@ namespace Gakko.API.Migrations
                 name: "documenttype",
                 columns: table => new
                 {
-                    iddocumenttype = table.Column<int>(type: "integer", nullable: false),
+                    iddocumenttype = table.Column<int>(type: "integer", nullable: false)
+                        .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn),
                     name = table.Column<string>(type: "character varying(100)", maxLength: 100, nullable: false)
                 },
                 constraints: table =>
@@ -41,7 +44,8 @@ namespace Gakko.API.Migrations
                 name: "nationality",
                 columns: table => new
                 {
-                    idnationality = table.Column<int>(type: "integer", nullable: false),
+                    idnationality = table.Column<int>(type: "integer", nullable: false)
+                        .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn),
                     name = table.Column<string>(type: "character varying(100)", maxLength: 100, nullable: false)
                 },
                 constraints: table =>
@@ -53,7 +57,8 @@ namespace Gakko.API.Migrations
                 name: "status",
                 columns: table => new
                 {
-                    idstatus = table.Column<int>(type: "integer", nullable: false),
+                    idstatus = table.Column<int>(type: "integer", nullable: false)
+                        .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn),
                     name = table.Column<string>(type: "character varying(200)", maxLength: 200, nullable: false)
                 },
                 constraints: table =>
@@ -65,7 +70,8 @@ namespace Gakko.API.Migrations
                 name: "studylevel",
                 columns: table => new
                 {
-                    idstudylevel = table.Column<int>(type: "integer", nullable: false),
+                    idstudylevel = table.Column<int>(type: "integer", nullable: false)
+                        .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn),
                     name = table.Column<string>(type: "character varying(100)", maxLength: 100, nullable: false)
                 },
                 constraints: table =>
@@ -77,7 +83,8 @@ namespace Gakko.API.Migrations
                 name: "studymode",
                 columns: table => new
                 {
-                    idstudymode = table.Column<int>(type: "integer", nullable: false),
+                    idstudymode = table.Column<int>(type: "integer", nullable: false)
+                        .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn),
                     name = table.Column<string>(type: "character varying(100)", maxLength: 100, nullable: false)
                 },
                 constraints: table =>
@@ -86,10 +93,11 @@ namespace Gakko.API.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "studyprogrammer",
+                name: "studyprogramme",
                 columns: table => new
                 {
-                    idstudyprogramme = table.Column<int>(type: "integer", nullable: false),
+                    idstudyprogramme = table.Column<int>(type: "integer", nullable: false)
+                        .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn),
                     name = table.Column<string>(type: "character varying(100)", maxLength: 100, nullable: false),
                     idstudylevel = table.Column<int>(type: "integer", nullable: false),
                     recruitmentstart = table.Column<DateOnly>(type: "date", nullable: false),
@@ -98,7 +106,7 @@ namespace Gakko.API.Migrations
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("studyprogrammer_pk", x => x.idstudyprogramme);
+                    table.PrimaryKey("studyprogramme_pk", x => x.idstudyprogramme);
                     table.ForeignKey(
                         name: "studyprogrammer_studycycle",
                         column: x => x.idstudylevel,
@@ -129,7 +137,7 @@ namespace Gakko.API.Migrations
                     table.ForeignKey(
                         name: "requiredenrollmentdocument_studyprogrammer",
                         column: x => x.idstudyprogramme,
-                        principalTable: "studyprogrammer",
+                        principalTable: "studyprogramme",
                         principalColumn: "idstudyprogramme");
                 });
 
@@ -137,12 +145,14 @@ namespace Gakko.API.Migrations
                 name: "student",
                 columns: table => new
                 {
-                    idcandidate = table.Column<int>(type: "integer", nullable: false),
+                    idcandidate = table.Column<int>(type: "integer", nullable: false)
+                        .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn),
                     firstname = table.Column<string>(type: "character varying(200)", maxLength: 200, nullable: false),
                     lastname = table.Column<string>(type: "character varying(200)", maxLength: 200, nullable: false),
                     phonenumber = table.Column<string>(type: "character varying(200)", maxLength: 200, nullable: false),
                     emailaddress = table.Column<string>(type: "character varying(200)", maxLength: 200, nullable: false),
                     homeaddress = table.Column<string>(type: "character varying(255)", maxLength: 255, nullable: false),
+                    indexnumber = table.Column<int>(type: "integer", nullable: true),
                     gender = table.Column<int>(type: "integer", nullable: false),
                     peselnumber = table.Column<string>(type: "character varying(11)", maxLength: 11, nullable: true),
                     passportnumber = table.Column<string>(type: "character varying(9)", maxLength: 9, nullable: true),
@@ -162,7 +172,7 @@ namespace Gakko.API.Migrations
                     table.ForeignKey(
                         name: "candidate_studyprogrammer",
                         column: x => x.idstudyprogramme,
-                        principalTable: "studyprogrammer",
+                        principalTable: "studyprogramme",
                         principalColumn: "idstudyprogramme");
                     table.ForeignKey(
                         name: "student_status",
@@ -175,7 +185,8 @@ namespace Gakko.API.Migrations
                 name: "appointment",
                 columns: table => new
                 {
-                    idappointment = table.Column<int>(type: "integer", nullable: false),
+                    idappointment = table.Column<int>(type: "integer", nullable: false)
+                        .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn),
                     date = table.Column<DateOnly>(type: "date", nullable: false),
                     idappointmentstatus = table.Column<int>(type: "integer", nullable: false),
                     idcandidate = table.Column<int>(type: "integer", nullable: false)
@@ -195,6 +206,55 @@ namespace Gakko.API.Migrations
                         principalColumn: "idcandidate");
                 });
 
+            migrationBuilder.CreateTable(
+                name: "candidatesdocument",
+                columns: table => new
+                {
+                    IdCandidate = table.Column<int>(type: "integer", nullable: false),
+                    IdDocumentType = table.Column<int>(type: "integer", nullable: false),
+                    confirmedat = table.Column<DateOnly>(type: "date", nullable: true)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("candidatesdocument_pk", x => new { x.IdCandidate, x.IdDocumentType });
+                    table.ForeignKey(
+                        name: "FK_candidatesdocument_documenttype_IdDocumentType",
+                        column: x => x.IdDocumentType,
+                        principalTable: "documenttype",
+                        principalColumn: "iddocumenttype",
+                        onDelete: ReferentialAction.Cascade);
+                    table.ForeignKey(
+                        name: "FK_candidatesdocument_student_IdCandidate",
+                        column: x => x.IdCandidate,
+                        principalTable: "student",
+                        principalColumn: "idcandidate",
+                        onDelete: ReferentialAction.Cascade);
+                });
+
+            migrationBuilder.InsertData(
+                table: "appointmentstatus",
+                columns: new[] { "idappointmentstatus", "name" },
+                values: new object[,]
+                {
+                    { 1, "Scheduled" },
+                    { 2, "Cancelled" },
+                    { 3, "Done" }
+                });
+
+            migrationBuilder.InsertData(
+                table: "documenttype",
+                columns: new[] { "iddocumenttype", "name" },
+                values: new object[,]
+                {
+                    { 1, "High school diploma" },
+                    { 2, "Bachelor's degree" },
+                    { 3, "Master's degree" },
+                    { 4, "Doctoral degree" },
+                    { 5, "English language certificate" },
+                    { 6, "Passport" },
+                    { 7, "Photo" }
+                });
+
             migrationBuilder.InsertData(
                 table: "nationality",
                 columns: new[] { "idnationality", "name" },
@@ -209,6 +269,52 @@ namespace Gakko.API.Migrations
                     { 7, "Polish" }
                 });
 
+            migrationBuilder.InsertData(
+                table: "status",
+                columns: new[] { "idstatus", "name" },
+                values: new object[,]
+                {
+                    { 1, "Candidate - registered" },
+                    { 2, "Candidate - waiting for documents" },
+                    { 3, "Candidate - waiting for signing contract" },
+                    { 4, "Candidate - waiting for payment" },
+                    { 5, "Student" },
+                    { 6, "Graduate" },
+                    { 7, "Student on leave" }
+                });
+
+            migrationBuilder.InsertData(
+                table: "studylevel",
+                columns: new[] { "idstudylevel", "name" },
+                values: new object[,]
+                {
+                    { 1, "Bachelor" },
+                    { 2, "Master" },
+                    { 3, "Doctoral" }
+                });
+
+            migrationBuilder.InsertData(
+                table: "studymode",
+                columns: new[] { "idstudymode", "name" },
+                values: new object[,]
+                {
+                    { 1, "Full-time" },
+                    { 2, "Part-time" }
+                });
+
+            migrationBuilder.InsertData(
+                table: "studyprogramme",
+                columns: new[] { "idstudyprogramme", "idstudylevel", "idstudymode", "name", "recruitmentend", "recruitmentstart" },
+                values: new object[,]
+                {
+                    { 1, 1, 1, "Computer Science", new DateOnly(2022, 9, 30), new DateOnly(2022, 1, 1) },
+                    { 2, 1, 1, "Information Technology", new DateOnly(2022, 9, 30), new DateOnly(2022, 1, 1) },
+                    { 3, 1, 1, "Software Engineering", new DateOnly(2022, 9, 30), new DateOnly(2022, 1, 1) },
+                    { 4, 2, 1, "Computer Science", new DateOnly(2022, 9, 30), new DateOnly(2022, 1, 1) },
+                    { 5, 2, 1, "Information Technology", new DateOnly(2022, 9, 30), new DateOnly(2022, 1, 1) },
+                    { 6, 2, 1, "Software Engineering", new DateOnly(2022, 9, 30), new DateOnly(2022, 1, 1) }
+                });
+
             migrationBuilder.CreateIndex(
                 name: "IX_appointment_idappointmentstatus",
                 table: "appointment",
@@ -218,6 +324,11 @@ namespace Gakko.API.Migrations
                 name: "IX_appointment_idcandidate",
                 table: "appointment",
                 column: "idcandidate");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_candidatesdocument_IdDocumentType",
+                table: "candidatesdocument",
+                column: "IdDocumentType");
 
             migrationBuilder.CreateIndex(
                 name: "IX_requiredenrollmentdocument_iddocumenttype",
@@ -240,13 +351,13 @@ namespace Gakko.API.Migrations
                 column: "idstudyprogramme");
 
             migrationBuilder.CreateIndex(
-                name: "IX_studyprogrammer_idstudylevel",
-                table: "studyprogrammer",
+                name: "IX_studyprogramme_idstudylevel",
+                table: "studyprogramme",
                 column: "idstudylevel");
 
             migrationBuilder.CreateIndex(
-                name: "IX_studyprogrammer_idstudymode",
-                table: "studyprogrammer",
+                name: "IX_studyprogramme_idstudymode",
+                table: "studyprogramme",
                 column: "idstudymode");
         }
 
@@ -255,6 +366,9 @@ namespace Gakko.API.Migrations
         {
             migrationBuilder.DropTable(
                 name: "appointment");
+
+            migrationBuilder.DropTable(
+                name: "candidatesdocument");
 
             migrationBuilder.DropTable(
                 name: "requiredenrollmentdocument");
@@ -272,7 +386,7 @@ namespace Gakko.API.Migrations
                 name: "nationality");
 
             migrationBuilder.DropTable(
-                name: "studyprogrammer");
+                name: "studyprogramme");
 
             migrationBuilder.DropTable(
                 name: "status");

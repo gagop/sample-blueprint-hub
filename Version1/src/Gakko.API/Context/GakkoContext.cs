@@ -133,7 +133,7 @@ public partial class GakkoContext : DbContext
             entity.Property(e => e.HomeAddress)
                 .HasMaxLength(255)
                 .HasColumnName("homeaddress");
-            entity.Property(e => e.IndexNumber).HasColumnName("indexnumber").HasMaxLength(50);
+            entity.Property(e => e.IndexNumber).HasColumnName("indexnumber");
             entity.Property(e => e.IdNationality).HasColumnName("idnationality");
             entity.Property(e => e.IdStatus).HasColumnName("idstatus");
             entity.Property(e => e.IdStudyProgramme).HasColumnName("idstudyprogramme");
@@ -294,12 +294,14 @@ public partial class GakkoContext : DbContext
             new StudyLevel { IdStudyLevel = 3, Name = "Doctoral" }
         );
 
+        var sp = new StudyProgramme
+        {
+            IdStudyProgramme = 1, IdStudyLevel = 1, IdStudyMode = 1, Name = "Computer Science",
+            RecruitmentStart = new DateOnly(2022, 1, 1), RecruitmentEnd = new DateOnly(2022, 9, 30)
+        };
+
         modelBuilder.Entity<StudyProgramme>().HasData(
-            new StudyProgramme
-            {
-                IdStudyProgramme = 1, IdStudyLevel = 1, IdStudyMode = 1, Name = "Computer Science",
-                RecruitmentStart = new DateOnly(2022, 1, 1), RecruitmentEnd = new DateOnly(2022, 9, 30)
-            },
+            sp,
             new StudyProgramme
             {
                 IdStudyProgramme = 2, IdStudyLevel = 1, IdStudyMode = 1, Name = "Information Technology",
@@ -328,7 +330,10 @@ public partial class GakkoContext : DbContext
         );
 
         modelBuilder.Entity<DocumentType>().HasData(
-            new DocumentType { IdDocumentType = 1, Name = "High school diploma" },
+            new DocumentType
+            {
+                IdDocumentType = 1, Name = "High school diploma"
+            },
             new DocumentType { IdDocumentType = 2, Name = "Bachelor's degree" },
             new DocumentType { IdDocumentType = 3, Name = "Master's degree" },
             new DocumentType { IdDocumentType = 4, Name = "Doctoral degree" },
