@@ -280,7 +280,8 @@ public partial class GakkoContext : DbContext
             new Status { IdStatus = 4, Name = "Candidate - waiting for payment" },
             new Status { IdStatus = 5, Name = "Student" },
             new Status { IdStatus = 6, Name = "Graduate" },
-            new Status { IdStatus = 7, Name = "Student on leave" }
+            new Status { IdStatus = 7, Name = "Student on leave" },
+            new Status { IdStatus = 8, Name = "Candidate - cancelled" }
         );
 
         modelBuilder.Entity<StudyMode>().HasData(
@@ -346,6 +347,14 @@ public partial class GakkoContext : DbContext
             new AppointmentStatus { IdAppointmentStatus = 1, Name = "Scheduled" },
             new AppointmentStatus { IdAppointmentStatus = 2, Name = "Cancelled" },
             new AppointmentStatus { IdAppointmentStatus = 3, Name = "Done" }
+        );
+
+        modelBuilder.Entity("Requiredenrollmentdocument").HasData(
+            new { Idstudyprogramme = 1, Iddocumenttype = 1 },
+            new { Idstudyprogramme = 1, Iddocumenttype = 5 },
+            new { Idstudyprogramme = 2, Iddocumenttype = 2 },
+            new { Idstudyprogramme = 3, Iddocumenttype = 3 }
+            // Add as many links as needed
         );
     }
 

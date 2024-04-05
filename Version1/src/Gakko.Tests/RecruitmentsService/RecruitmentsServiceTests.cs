@@ -3,6 +3,7 @@ using Gakko.API.DTOs;
 using Gakko.API.Models;
 using Gakko.API.Services;
 using Gakko.Tests.Setup;
+using Microsoft.EntityFrameworkCore;
 using NSubstitute;
 
 namespace Gakko.Tests.RecruitmentsService;
@@ -20,8 +21,41 @@ public class RecruitmentsServiceTests
         appointmentService.ScheduleAppointmentForCandidate(1).Returns(new DateOnly(2025, 1, 5));
         _service = new API.Services.RecruitmentsService(_dbContext, appointmentService, emailService);
     }
-    
-    
+
+    [Fact]
+    public async Task CancelOngoingRecruitmentsAsync_Should_Cancel_All_The_Ongoing_Recruitments()
+    {
+        //Arrange
+        await _dbContext.Students.AddAsync(new Student
+        {
+            IdCandidate = 1,
+            FirstName = "John",
+            LastName = "Doe",
+            HomeAddress = "Warsaw, Zlota 12",
+            IdNationality = 1,
+            IdStatus = 1,
+            EmailAddress = "doe@gmail.com",
+            PeselNumber = "50010112345",
+            PhoneNumber = "454-232-232",
+            DateOfBirth = new DateOnly(1970, 1, 1)
+        });
+
+        await _dbContext.Appointments.AddAsync(new Appointment
+        {
+            IdCandidate = 1,
+            Date = new DateOnly(2025, 1, 1),
+            IdAppointmentStatus = 1
+        });
+        await _dbContext.SaveChangesAsync();
+
+        //Act
+        await _service.CancelOngoingRecruitmentsAsync();
+
+        //Assert
+        var appointments = await _dbContext.Appointments.ToListAsync();
+        Assert.True(appointments.Count() == 1);
+        Assert.True(appointments.FirstOrDefault().IdAppointmentStatus == 2);
+    }
 
     [Fact]
     public async void CreateRecruitmentAsync_Should_Return_Argument_Exception_When_Student_Is_Too_Young()
