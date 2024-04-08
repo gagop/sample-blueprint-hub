@@ -242,7 +242,6 @@ First use case is related to online application used by the candidate to registe
 4. Upon the actor clicking "OK", the system proceeds to create a new appointment. This involves communicating with an external service responsible for determining the availability and setting the date for the appointment. The new appointment details are then saved in the database.
 5. The system displays confirmation of the new appointment, including its details. Simultaneously, an email containing information about the new appointment is sent to the candidate.
 
-
 **ID**: 4
 **Name**: Cancel an appointment
 **Actor**: Recruitment office employee
