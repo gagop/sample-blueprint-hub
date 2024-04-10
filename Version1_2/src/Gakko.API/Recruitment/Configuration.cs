@@ -46,7 +46,7 @@ public static class Configuration
                 return Results.NoContent();
             }).WithName("ConfirmAdmissionFeePayment").WithOpenApi();
 
-        app.MapPut("recruitments/unfinished",
+        app.MapPut("api/recruitments/unfinished",
             async (IRecruitmentsService service, int idStudent) =>
             {
                 await service.CancelOngoingRecruitmentsAsync();
