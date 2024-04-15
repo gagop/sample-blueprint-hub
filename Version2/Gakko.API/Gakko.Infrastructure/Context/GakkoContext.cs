@@ -1,9 +1,10 @@
-﻿using Gakko.Core.Entities;
+﻿using Gakko.Application.Interfaces;
+using Gakko.Core.Entities;
 using Microsoft.EntityFrameworkCore;
 
-namespace Gakko.API.Context;
+namespace Gakko.Infrastructure.Context;
 
-public partial class GakkoContext : DbContext
+public partial class GakkoContext : DbContext, IDbContext
 {
     public GakkoContext()
     {
@@ -16,17 +17,13 @@ public partial class GakkoContext : DbContext
 
     public virtual DbSet<Appointment> Appointments { get; set; }
     public virtual DbSet<AppointmentStatus> AppointmentStatuses { get; set; }
-
     public virtual DbSet<DocumentType> DocumentTypes { get; set; }
     public virtual DbSet<CandidatesDocument> CandidatesDocument { get; set; }
     public virtual DbSet<Nationality> Nationalities { get; set; }
     public virtual DbSet<Status> Statuses { get; set; }
     public virtual DbSet<Student> Students { get; set; }
-
     public virtual DbSet<StudyLevel> StudyLevels { get; set; }
-
     public virtual DbSet<StudyMode> StudyModes { get; set; }
-
     public virtual DbSet<StudyProgramme> StudyProgrammes { get; set; }
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
